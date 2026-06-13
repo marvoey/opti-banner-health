@@ -1,6 +1,6 @@
 'use client';
 
-import { HeartIcon, ChevronRightIcon } from './icons';
+import { Heart, ChevronRight } from 'lucide-react';
 
 const IntentTriggers = () => {
   const conditions = [
@@ -35,12 +35,12 @@ const IntentTriggers = () => {
             >
               <div className="absolute top-0 right-0 w-24 h-24 bg-[#FFD100]/10 rounded-bl-[100px] -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-500" />
               <div className="w-14 h-14 bg-blue-50 text-[#00205C] rounded-2xl mb-8 flex items-center justify-center group-hover:bg-[#FFD100] transition-colors relative z-10">
-                <HeartIcon size={24} />
+                <Heart size={24} />
               </div>
               <h3 className="text-2xl font-bold text-[#00205C] mb-4 relative z-10">{item.title}</h3>
               <p className="text-gray-500 font-medium leading-relaxed mb-8 lowercase italic">{item.desc}</p>
               <div className="flex items-center text-[#00205C] font-bold text-xs uppercase tracking-widest group-hover:underline">
-                Explore Care <ChevronRightIcon size={14} className="ml-2" />
+                Explore Care <ChevronRight size={14} className="ml-2" />
               </div>
             </div>
           ))}
