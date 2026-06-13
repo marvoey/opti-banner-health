@@ -26,10 +26,6 @@ type Props = {
  */
 async function Page({ searchParams }: Props) {
   const raw = await searchParams;
-  if (process.env.NODE_ENV !== 'production') {
-    console.log('[preview] searchParams', raw);
-  }
-
   const params = raw as unknown as PreviewParams;
   const content = await getClient().getPreviewContent(params);
 

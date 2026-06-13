@@ -2,197 +2,141 @@
 name: optimizely-nextjs-cms
 description: >-
   Reference patterns for wiring Optimizely CMS SaaS (@optimizely/cms-sdk v2) into
-  a Next.js 16 App Router app. Use when implementing locale-aware clean URLs via
-  proxy.ts (the Next 16 replacement for Middleware), the app/[locale]/[[...slug]]
-  catch-all, RSC-only Optimizely Graph fetching, or the preview/Draft route that
-  branches between Pages, shared Blocks (contentassets/), and Visual Builder
-  Experiences (_experience). Trigger on tasks touching Optimizely Graph,
-  getContentByPath/getPreviewContent, on-page editing overlays (getPreviewUtils),
-  proxy.ts, or @optimizely/cms-sdk.
+  a Next.js 16 App Router app. Use when implementing the app/[locale]/[[...slug]]
+  catch-all, locale clean-URLs via proxy.ts (the Next 16 replacement for
+  Middleware), Optimizely Graph fetching (getContentByPath/getPreviewContent),
+  on-page editing overlays (getPreviewUtils / pa), Visual Builder composition
+  (experiences, sections, rows, columns, elements), display templates, or
+  pushing content types with @optimizely/cms-cli. Trigger on tasks touching
+  Optimizely Graph, proxy.ts, preview/Draft routes, or @optimizely/cms-sdk.
 ---
 
 # Optimizely CMS SaaS on Next.js 16 (App Router)
 
-Implementation guidance + reference code for connecting this app to Optimizely CMS SaaS using
-`@optimizely/cms-sdk` v2 and `@optimizely/cms-cli` v2.
+Implementation guidance + reference code for `@optimizely/cms-sdk` v2 and
+`@optimizely/cms-cli` v2. **Verify APIs against source before emitting code**:
+Next 16 docs in `node_modules/next/dist/docs/`; SDK guides in `/docs`. The notes
+below were confirmed empirically against this SDK version.
 
-> **Verify against the source of truth before emitting code.** This repo runs a modified Next.js 16
-> (see `AGENTS.md`) — read `node_modules/next/dist/docs/` for any Next API. Read the SDK guides in
-> `/docs` (`1`–`13`) for SDK APIs. Two things have differed from the SDK docs in practice and MUST
-> be confirmed at implementation time:
-> 1. Whether `@optimizely/cms-sdk/next` (`NextPreviewComponent`) is exported in the installed
->    version — if not, fall back to `PreviewComponent` from `@optimizely/cms-sdk/react/client`.
-> 2. The exact preview-URL markers the CMS sends (`ctx`, `key`, `ver`, `loc`, `preview_token`, and
->    the `_experience` / `contentassets/` discriminators below) — log the incoming `searchParams`
->    once and confirm before relying on them.
+Repo specifics: app dir is `app/` (no `src/`); alias `@/* → ./*`; CMS code under
+`@/cms/...`. Env (`.env`): `OPTIMIZELY_GRAPH_SINGLE_KEY`, `OPTIMIZELY_GRAPH_GATEWAY`
+(`https://cg.optimizely.com/content/v2`), `OPTIMIZELY_CMS_URL`,
+`OPTIMIZELY_CMS_CLIENT_ID`/`OPTIMIZELY_CMS_CLIENT_SECRET` (CLI), and
+`OPTIMIZELY_DEFAULT_LOCALE`.
 
-This repo specifics: app dir is `app/` (no `src/`); tsconfig alias `@/* → ./*`; CMS code lives under
-`@/cms/...`. Env vars (`.env.local`): `OPTIMIZELY_GRAPH_SINGLE_KEY`, `OPTIMIZELY_GRAPH_GATEWAY`
-(`https://cg.optimizely.com/content/v2`), `OPTIMIZELY_CMS_URL`, and `OPTIMIZELY_CMS_CLIENT_ID` /
-`OPTIMIZELY_CMS_CLIENT_SECRET` (CLI push only).
+## Verified gotchas (read first)
 
----
+- **No `@optimizely/cms-sdk/next` export in v2.0.0.** The docs' `NextPreviewComponent`
+  doesn't resolve — use `PreviewComponent` from `@optimizely/cms-sdk/react/client`.
+- **Default-locale URLs are CLEAN once a hostname is configured.** With a CMS
+  Hostname set (e.g. `http://localhost:3000`), Graph indexes the default locale's
+  `_metadata.url.default` WITHOUT a locale prefix (e.g. `/vb-demo/`), sets
+  `url.base = <host>`, and keeps `locale` as metadata. So the Graph path must NOT
+  include the locale for the default locale. (Before a hostname is set, it's the
+  locale-prefixed `/en/vb-demo/` with no base — which is why this bites you.)
+  Non-default locales may be path-prefixed; handle those later.
+- **`getContentByPath(path)`** matches `_metadata.url.default` (it tries the path
+  with and without a trailing slash) and, only if you pass `{ host }`, also
+  `_metadata.url.base`. Single-site: omit host. Always guard `content[0]` and call
+  `notFound()` on empty.
+- **`OptimizelyGridSection` does NOT wrap leaf elements** (unlike `OptimizelyComposition`,
+  which wraps each node in your `ComponentWrapper`). So element components must mark
+  their OWN editable block boundary, or on-page editing won't attach to grid/column
+  elements. See §4.
+- **Section content properties are NEVER delivered** by the composition query. The
+  SDK fragment fetches `component { ..._IComponent }` only for component (element)
+  nodes, not section/structure nodes. A section is a WRAPPER — configure it with a
+  DISPLAY TEMPLATE (`displaySettings`), not content properties. See §5.
+- **`sectionEnabled` is auto-applied** by the CLI when you push a `_section` type;
+  no need to declare `compositionBehaviors` for sections.
+- **Publishing a `_experience` requires its SEO `GraphType`.** On a `BlankExperience`,
+  `BlankExperienceSeoSettings.GraphType` is required and only accepts `-` or `article`.
+- **`opti-cli config push` discovers BOTH content types and display templates** from
+  the `components` glob. Keep the registry module as `.ts` (not `.tsx`) so the
+  `./cms/**/*.tsx` glob skips it.
 
 ## 1. Locale routing with `proxy.ts`
 
-Optimizely Graph resolves content by a locale-prefixed path (e.g. `/en/home/`). We want **clean
-public URLs** (`/home`) while still routing internally to `app/[locale]/...` so the `[locale]` param
-is populated and Graph queries stay consistent.
-
-`proxy.ts` (Next 16 Middleware replacement) is the right tool: it does **routing only — no data
-fetching** (fetching here inflates TTFB and is explicitly discouraged in the Next docs). Place it at
-the project root, sibling of `app/`.
+`proxy.ts` (Next 16 Middleware replacement; root, sibling of `app/`) gives clean
+public URLs and populates `app/[locale]`. Routing only — NO data fetching.
 
 ```ts
-// proxy.ts  (project root — NOT inside app/)
+// proxy.ts (project root)
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const LOCALES = ['en'] as const;          // add 'es', 'fr', … as the CMS enables them
-const DEFAULT_LOCALE = 'en';
-
-function localeIn(pathname: string): string | null {
-  const seg = pathname.split('/')[1];
-  return (LOCALES as readonly string[]).includes(seg) ? seg : null;
-}
+const DEFAULT_LOCALE = process.env.OPTIMIZELY_DEFAULT_LOCALE || 'en';
+const KNOWN_LOCALES = [DEFAULT_LOCALE];
+const MOCK_ROUTE_RE = /^\/(services|locations)(\/|$)/; // routes still served by app/ (drop as they migrate)
 
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
-  const found = localeIn(pathname);
+  if (pathname === '/' || MOCK_ROUTE_RE.test(pathname)) return NextResponse.next();
 
-  // 1) Default-locale prefix is visible → REDIRECT to the clean path (SEO).
-  //    /en/home  ->  /home   ;   /en  ->  /
-  if (found === DEFAULT_LOCALE) {
-    const stripped = pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+  const seg = pathname.split('/')[1] ?? '';
+  if (seg === DEFAULT_LOCALE) {                                   // /en/x → redirect to clean /x
+    const stripped = pathname.replace(new RegExp(`^/${DEFAULT_LOCALE}(?=/|$)`), '') || '/';
     return NextResponse.redirect(new URL(stripped + search, request.url));
   }
-
-  // 2) A non-default locale is present (e.g. /es/home) → leave it; [locale] is already populated.
-  if (found) return NextResponse.next();
-
-  // 3) Clean path with no locale → REWRITE to the default-locale route so [locale] is populated.
-  //    /home  ->  /en/home   ;   /  ->  /en
-  const rewritten = `/${DEFAULT_LOCALE}${pathname === '/' ? '' : pathname}`;
-  return NextResponse.rewrite(new URL(rewritten + search, request.url));
+  if (KNOWN_LOCALES.includes(seg)) return NextResponse.next();    // other locale present
+  return NextResponse.rewrite(new URL(`/${DEFAULT_LOCALE}${pathname}${search}`, request.url)); // /x → /en/x
 }
 
 export const config = {
-  // Run on everything EXCEPT API, Next internals, the preview route, and static assets.
-  // (Without a matcher, proxy runs on _next/static, _next/image and public/ too — see proxy docs.)
   matcher: ['/((?!api|_next/static|_next/image|preview|favicon.ico|.*\\..*).*)'],
 };
 ```
 
-**Why redirect for the prefix but rewrite for the clean path?** Redirect makes the clean URL the one
-canonical, indexable address. Rewrite keeps the clean URL in the address bar while the framework
-internally renders the locale-prefixed route — so `params.locale` is real and the Graph path matches
-what the CMS indexed.
+The `[locale]` segment + proxy normalize the URL and capture `locale`, but for the
+DEFAULT locale the Graph query must use the **clean path** (§2) — the proxy is about
+the address bar, not the Graph lookup.
 
-Excluding `/preview` from the matcher is important: preview requests come from the CMS with their own
-query params and must hit the preview route untouched.
+## 2. `app/[locale]/[[...slug]]/page.tsx` (catch-all)
 
----
-
-## 2. `app/[locale]` structure + catch-all page
-
-```
-app/
-├── layout.tsx                      # imports '@/cms/registry' (config + registries)
-├── [locale]/
-│   └── [[...slug]]/
-│       └── page.tsx                # resolves any CMS path via Graph
-└── preview/
-    └── page.tsx                    # CMS preview / on-page editing (section 3)
-```
-
-`[[...slug]]` is an **optional** catch-all so `/en` (home) and `/en/a/b` both resolve here.
+Build the Graph path from the **slug only** — do NOT prefix the locale (see gotchas).
 
 ```tsx
-// app/[locale]/[[...slug]]/page.tsx
 import { getClient } from '@optimizely/cms-sdk';
 import { OptimizelyComponent, withAppContext } from '@optimizely/cms-sdk/react/server';
 import { notFound } from 'next/navigation';
 
-type Props = {
-  params: Promise<{ locale: string; slug?: string[] }>;
-};
+type Props = { params: Promise<{ locale: string; slug?: string[] }> };
 
 async function Page({ params }: Props) {
-  const { locale, slug = [] } = await params;
-  const path = `/${[locale, ...slug].join('/')}/`; // e.g. /en/home/
-
+  const { slug = [] } = await params;
+  const path = slug.length ? `/${slug.join('/')}/` : '/';   // "/vb-demo/", NOT "/en/vb-demo/"
   const content = await getClient().getContentByPath(path);
   if (!content?.[0]) notFound();
-
   return <OptimizelyComponent content={content[0]} />;
 }
 
 export default withAppContext(Page);
 ```
 
-`getClient()` requires `config({...})` to have run once — do it in `@/cms/registry` (imported by
-`app/layout.tsx`) alongside `initContentTypeRegistry()` and `initReactComponentRegistry()`.
+`getClient()` needs `config({...})` to have run once — do it in `@/cms/registry`
+(imported for side effects by `app/layout.tsx`) alongside `initContentTypeRegistry`,
+`initDisplayTemplateRegistry`, and `initReactComponentRegistry`.
 
-> Keep fetching in this Server Component (RSC), never in `proxy.ts`. Lean on the Next data
-> cache / streaming for published content; preview content (section 3) must be dynamic.
-
----
-
-## 3. Preview / Draft route with branching
-
-The CMS opens your `/preview` URL with preview params and expects three different render shells
-depending on **what** is being previewed. Detect the kind from the incoming params, then render the
-matching shell. All three share: the communication-injector `<Script>`, the live-update component,
-and `withAppContext`.
+## 3. Preview / Draft route
 
 ```tsx
 // app/preview/page.tsx
 import { getClient, type PreviewParams } from '@optimizely/cms-sdk';
 import { OptimizelyComponent, withAppContext } from '@optimizely/cms-sdk/react/server';
-// Prefer the Next-optimized component; fall back if the /next subpath isn't exported:
-import { NextPreviewComponent } from '@optimizely/cms-sdk/next';
-// import { PreviewComponent } from '@optimizely/cms-sdk/react/client';
+import { PreviewComponent } from '@optimizely/cms-sdk/react/client'; // NOT /next (unexported)
 import Script from 'next/script';
 
-export const dynamic = 'force-dynamic'; // preview is always per-request, never cached
+export const dynamic = 'force-dynamic';
 
-type Props = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
-
-async function Page({ searchParams }: Props) {
-  const params = (await searchParams) as PreviewParams & Record<string, string>;
-
-  // Discriminate the preview kind. CONFIRM these markers against a real preview URL.
-  const isExperience = 'key' in params && (params.ctx === 'experience' || '_experience' in params);
-  const isSharedBlock = typeof params.key === 'string' && params.key.includes('contentassets/');
-
+async function Page({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const params = (await searchParams) as unknown as PreviewParams;
   const content = await getClient().getPreviewContent(params);
-
-  const injector = new URL(
-    '/util/javascript/communicationinjector.js',
-    process.env.OPTIMIZELY_CMS_URL,
-  ).href;
-
+  const injector = new URL('/util/javascript/communicationinjector.js', process.env.OPTIMIZELY_CMS_URL).href;
   return (
     <>
       <Script src={injector} strategy="afterInteractive" />
-      <NextPreviewComponent />
-      {/* Pages, Experiences, and Blocks all render through OptimizelyComponent, which resolves
-          the registered React component for the content's type. The branch lets you wrap each in
-          a different shell (full chrome for pages, bare canvas for experiences, isolated wrapper
-          for shared blocks) so the in-editor overlay matches the real context. */}
-      {isSharedBlock ? (
-        <div className="preview-block-shell">
-          <OptimizelyComponent content={content} />
-        </div>
-      ) : isExperience ? (
-        <main className="preview-experience-shell">
-          <OptimizelyComponent content={content} />
-        </main>
-      ) : (
-        <OptimizelyComponent content={content} />
-      )}
+      <PreviewComponent />
+      <OptimizelyComponent content={content} />
     </>
   );
 }
@@ -200,49 +144,94 @@ async function Page({ searchParams }: Props) {
 export default withAppContext(Page);
 ```
 
-- **Pages** → render directly (optionally inside your normal page chrome).
-- **Shared Blocks** (`contentassets/`) → wrap in an isolated shell so a block authored outside any
-  page still previews correctly.
-- **Visual Builder Experiences** (`_experience`) → render in a bare canvas shell; the experience's
-  own registered component (`BlankExperience` etc.) draws the composition via `OptimizelyComposition`.
+CMS-side: add Hostname `http://localhost:3000`; Live Preview → Use Preview Tokens →
+preview URL `http://localhost:3000/preview`. `PreviewParams` = `{ preview_token, key, ctx, ver, loc }`.
 
-CMS-side setup (per `docs/7-live-preview.md`): add hostname `http://localhost:3000`; Live Preview →
-Use Preview Tokens → preview URL `http://localhost:3000/preview`.
+## 4. On-page editing overlays (`pa`)
 
----
+`getPreviewUtils(content).pa(x)` emits `data-epi-*` ONLY when `content.__context.edit`
+is true (set when the preview URL's `ctx === 'edit'`). `pa('field')` → property overlay;
+`pa(node)` (object with `.key`) → block boundary.
 
-## 4. On-page editing overlays
-
-In every component (page, section, element), spread `pa()` from `getPreviewUtils` onto the elements
-that map to properties, and wrap composition nodes so editors can click both the **element** and the
-**individual property**:
+- **Sections / rows / columns**: apply `pa(content)` (section) and `pa(node)` (in your
+  row/column wrappers). `OptimizelyComposition` wraps experience-level nodes in your
+  `ComponentWrapper` (which applies `pa(node)`).
+- **Element components in a grid**: `OptimizelyGridSection` renders them WITHOUT a
+  wrapper, so each element must mark its own block boundary from its composition node
+  (the grid sets `content.__composition`; it's absent at the experience level, so this
+  is a safe no-op there):
 
 ```tsx
-import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
-
-const { pa, src } = getPreviewUtils(content);
-// <h2 {...pa('heading')}>{content.heading}</h2>
-// <img {...pa('image')} src={src(content.image)} alt={...} />
+const { pa } = getPreviewUtils(content);
+const block = content.__composition; // typed on the inferred content; { key } | undefined
+return <article {...pa(block)}>{/* …fields with pa('field')… */}</article>;
 ```
 
-For composition renderers, give `OptimizelyComposition` a `ComponentWrapper` and
-`OptimizelyGridSection` custom `row`/`column` components, each applying `pa(node)` — this is where the
-section / row / column / element overlay focus is wired. See `docs/8-experience.md`.
+Apply `pa('field')` to every editable property so editors can click straight to it.
 
----
+## 5. Sections are wrappers — configure via display templates
 
-## Gotchas
+A `_section` hosts the composition grid and (optionally) presentational config. Its
+own content properties are NOT delivered (see gotchas), so put options on a DISPLAY
+TEMPLATE and read them via the `displaySettings` prop. A default template (`isDefault`)
+flows to the default component — no variant/tag needed.
 
-- `proxy.ts` lives at the project **root**, not in `app/`. Only one per project. Node.js runtime.
-- Exclude `/preview`, `api`, and static assets from the proxy `matcher`, or preview/asset requests
-  break.
-- `getClient()` needs `config()` to have run first (in the registry module imported by the layout).
-- `getContentByPath` returns an **array** — guard `content[0]` and call `notFound()` when empty.
-- Trailing slash: build the Graph path with a trailing `/` (`/en/home/`) as the SDK docs show.
-- Published content can be cached; the preview route must be `dynamic = 'force-dynamic'`.
+```tsx
+import { contentType, displayTemplate, type ContentProps } from '@optimizely/cms-sdk';
+import { OptimizelyGridSection, getPreviewUtils } from '@optimizely/cms-sdk/react/server';
+
+export const DemoSectionContentType = contentType({
+  key: 'DemoSection', baseType: '_section', displayName: 'Demo Section', properties: {},
+});
+
+export const DemoSectionDisplayTemplate = displayTemplate({
+  key: 'DemoSectionDefault', isDefault: true, displayName: 'Demo Section',
+  contentType: 'DemoSection',
+  settings: {
+    background: { editor: 'select', displayName: 'Background', sortOrder: 0,
+      choices: { muted: { displayName: 'Muted', sortOrder: 1 }, navy: { displayName: 'Navy', sortOrder: 2 } } },
+  },
+});
+
+type Props = {
+  content: ContentProps<typeof DemoSectionContentType>;
+  displaySettings?: ContentProps<typeof DemoSectionDisplayTemplate>;
+};
+
+export default function DemoSection({ content, displaySettings }: Props) {
+  const { pa } = getPreviewUtils(content);
+  const bg = displaySettings?.background === 'navy' ? 'bg-blue-900 text-white' : 'bg-slate-100';
+  return (
+    <section {...pa(content)} className={`rounded-3xl px-6 py-10 ${bg}`}>
+      <OptimizelyGridSection nodes={content.nodes} row={DemoRow} column={DemoColumn} />
+    </section>
+  );
+}
+```
+
+Register with `initDisplayTemplateRegistry([DemoSectionDisplayTemplate])`. Display
+template targets (choose one): `contentType` | `baseType` (`_section`/`_component`/
+`_experience`) | `nodeType` (`row`/`column`). Editors set `select`/`checkbox` values
+in VB; values are the choice keys.
+
+## Composition model
+
+- **Experience** (`_experience`) — routable page; renders `OptimizelyComposition` over
+  `content.composition.nodes` with a `ComponentWrapper`.
+- **Section** (`_section`) — wrapper; renders `OptimizelyGridSection` over `content.nodes`
+  with custom `row`/`column`. Config via display templates.
+- **Element** (`_component` + `compositionBehaviors: ['elementEnabled']`) — the actual
+  content; dropped into a section's columns; self-marks its block boundary (§4).
+
+## CLI workflow
+
+Define content types + display templates in `./cms/**/*.tsx`; push with
+`npx @optimizely/cms-cli config push optimizely.config.mjs`. Removing/altering a
+property on a type with existing content is a breaking change → re-run with `--force`
+(drops affected data). `buildConfig({ components, propertyGroups })` in
+`optimizely.config.mjs`; property `group` keys must reference a declared propertyGroup.
 
 ## References
-- Next 16 Proxy: `node_modules/next/dist/docs/01-app/01-getting-started/16-proxy.md` and
-  `.../03-api-reference/03-file-conventions/proxy.md`
-- SDK fetching/rendering/preview/experience: `docs/5-fetching.md`, `docs/6-rendering-react.md`,
-  `docs/7-live-preview.md`, `docs/8-experience.md`, `docs/3-modelling.md`
+- Next 16 Proxy: `node_modules/next/dist/docs/01-app/01-getting-started/16-proxy.md`
+- SDK guides: `docs/3-modelling.md`, `5-fetching.md`, `6-rendering-react.md`,
+  `7-live-preview.md`, `8-experience.md`, `9-display-settings.md`
