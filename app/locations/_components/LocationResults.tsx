@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Phone } from 'lucide-react';
 
 const LocationResults = () => {
@@ -20,7 +21,11 @@ const LocationResults = () => {
         </div>
 
         {locations.map((loc, i) => (
-          <div key={i} className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:border-[#FFD100] transition-all group cursor-pointer relative overflow-hidden">
+          <Link
+            key={i}
+            href="/locations/urgent-care/phoenix"
+            className="block bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:border-[#FFD100] transition-all group cursor-pointer relative overflow-hidden"
+          >
             <div className="flex justify-between items-start mb-6">
               <div className="max-w-[70%]">
                 <h3 className="text-xl font-bold text-[#00205C] mb-2">{loc.name}</h3>
@@ -34,12 +39,12 @@ const LocationResults = () => {
               </div>
             </div>
             <div className="flex gap-4 pt-6 border-t border-slate-50">
-              <button className="flex-grow bg-[#00205C] text-white py-3 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-blue-800 transition-colors">Schedule Online</button>
-              <button className="w-12 h-12 border-2 border-slate-100 rounded-full flex items-center justify-center hover:bg-slate-50 transition-colors">
+              <span className="flex-grow text-center bg-[#00205C] text-white py-3 rounded-full font-bold text-xs uppercase tracking-widest group-hover:bg-blue-800 transition-colors">Schedule Online</span>
+              <span className="w-12 h-12 border-2 border-slate-100 rounded-full flex items-center justify-center group-hover:bg-slate-50 transition-colors shrink-0">
                 <Phone size={18} className="text-[#00205C]" />
-              </button>
+              </span>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 

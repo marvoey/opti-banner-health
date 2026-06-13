@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { X, Eye } from 'lucide-react';
 
 type PreviewBadgeProps = {
@@ -24,6 +24,13 @@ const PreviewBadge = ({
   dotClassName,
 }: PreviewBadgeProps) => {
   const [visible, setVisible] = useState(true);
+
+  // Auto-dismiss after 10s; cleared if the user toggles it manually first.
+  useEffect(() => {
+    if (!visible) return;
+    const timer = setTimeout(() => setVisible(false), 10_000);
+    return () => clearTimeout(timer);
+  }, [visible]);
 
   const isRibbon = variant === 'ribbon';
   const anchor = isRibbon

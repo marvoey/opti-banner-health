@@ -20,7 +20,7 @@ const LocationsPage = () => (
     <PreviewBadge
       className="bg-green-600 text-white border-green-400"
       dotClassName="bg-white animate-pulse"
-      label="Scenario Step 3: Location Signal (Phoenix, AZ)"
+      label="Stage 4: Context (Localized Utility)"
     />
 
     <TopNav />

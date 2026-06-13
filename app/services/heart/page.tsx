@@ -20,7 +20,7 @@ const HeartServicesPage = () => (
     <PreviewBadge
       className="bg-blue-600 text-white border-blue-400"
       dotClassName="bg-yellow-400 animate-ping"
-      label="Scenario Step 2: Intent Signal (Cardiology)"
+      label="Stage 3: Intent (Capturing the Signal)"
     />
 
     <TopNav />
