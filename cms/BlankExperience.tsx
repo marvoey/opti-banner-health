@@ -4,10 +4,16 @@ import { ComponentWrapper } from './wrappers';
 
 type Props = { content: ContentProps<typeof BlankExperienceContentType> };
 
-/** Renders a Visual Builder experience: a flat composition of sections / elements. */
+/**
+ * Renders a Visual Builder experience: a flat composition of sections / elements.
+ *
+ * The shell is full-width on purpose. Each section / component owns its own
+ * width constraint (e.g. an inner `container mx-auto`), which lets full-bleed
+ * blocks like the Hero span edge to edge while content sections self-center.
+ */
 export default function BlankExperience({ content }: Props) {
   return (
-    <main className="mx-auto max-w-5xl px-6 py-12">
+    <main>
       <OptimizelyComposition
         nodes={content.composition?.nodes ?? []}
         ComponentWrapper={ComponentWrapper}

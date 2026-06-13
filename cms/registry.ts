@@ -10,6 +10,7 @@ import { initReactComponentRegistry } from '@optimizely/cms-sdk/react/server';
 import BlankExperience from './BlankExperience';
 import BlankSection from './BlankSection';
 import DemoSection, { DemoSectionContentType, DemoSectionDisplayTemplate } from './DemoSection';
+import Hero, { HeroContentType } from './Hero';
 import DemoText, { DemoTextContentType } from './DemoText';
 import DemoCard, { DemoCardContentType } from './DemoCard';
 import DemoMedia, { DemoMediaContentType } from './DemoMedia';
@@ -32,6 +33,7 @@ initContentTypeRegistry([
   BlankExperienceContentType,
   BlankSectionContentType,
   DemoSectionContentType,
+  HeroContentType,
   DemoTextContentType,
   DemoCardContentType,
   DemoMediaContentType,
@@ -45,6 +47,7 @@ initReactComponentRegistry({
     BlankExperience,
     BlankSection,
     DemoSection,
+    BannerDemoHero: Hero,
     DemoText,
     DemoCard,
     DemoMedia,
