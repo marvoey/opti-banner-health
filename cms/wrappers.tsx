@@ -5,30 +5,24 @@ import {
 } from '@optimizely/cms-sdk/react/server';
 
 /**
- * Reusable composition wrappers. Each spreads `pa(node)` so the CMS overlay can
- * focus the element / row / column in preview mode. This is the single place the
- * section / row / column overlay wiring lives.
+ * Wrapper for component nodes placed directly in an experience outline. Applies
+ * the editable block boundary via pa(node).
  */
-
 export function ComponentWrapper({ children, node }: ComponentContainerProps) {
   const { pa } = getPreviewUtils(node);
   return <div {...pa(node)}>{children}</div>;
 }
 
-export function DemoRow({ children, node }: StructureContainerProps) {
-  const { pa } = getPreviewUtils(node);
-  return (
-    <div {...pa(node)} className="flex flex-col gap-6 md:flex-row md:items-stretch">
-      {children}
-    </div>
-  );
+/**
+ * Rows and columns are PURE LAYOUT — no data-epi-block-id. This matches
+ * Optimizely's Visual Builder reference, where only the section/grid and the
+ * leaf elements are editable blocks; tagging rows/columns adds overlapping
+ * block regions that interfere with element hover/selection.
+ */
+export function DemoRow({ children }: StructureContainerProps) {
+  return <div className="flex flex-col gap-6 md:flex-row md:items-stretch">{children}</div>;
 }
 
-export function DemoColumn({ children, node }: StructureContainerProps) {
-  const { pa } = getPreviewUtils(node);
-  return (
-    <div {...pa(node)} className="flex-1">
-      {children}
-    </div>
-  );
+export function DemoColumn({ children }: StructureContainerProps) {
+  return <div className="flex-1">{children}</div>;
 }
