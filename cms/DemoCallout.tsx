@@ -18,13 +18,16 @@ type Props = { content: ContentProps<typeof DemoCalloutContentType> };
 
 export default function DemoCallout({ content }: Props) {
   const { pa } = getPreviewUtils(content);
+  // Grid elements aren't wrapped by OptimizelyGridSection, so mark our own
+  // editable block boundary from the composition node (no-op outside the grid).
+  const block = (content as { __composition?: { key: string } }).__composition;
 
   const href = content.cta?.url?.default ?? undefined;
   const label = content.cta?.text || content.cta?.title || 'Learn more';
   const date = content.publishedDate ? new Date(content.publishedDate) : null;
 
   return (
-    <section className="rounded-2xl bg-blue-900 p-8 text-white">
+    <section {...pa(block)} className="rounded-2xl bg-blue-900 p-8 text-white">
       <h3 {...pa('title')} className="text-2xl font-bold">
         {content.title}
       </h3>

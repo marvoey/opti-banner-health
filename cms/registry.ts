@@ -1,6 +1,7 @@
 import {
   config,
   initContentTypeRegistry,
+  initDisplayTemplateRegistry,
   BlankExperienceContentType,
   BlankSectionContentType,
 } from '@optimizely/cms-sdk';
@@ -8,6 +9,7 @@ import { initReactComponentRegistry } from '@optimizely/cms-sdk/react/server';
 
 import BlankExperience from './BlankExperience';
 import BlankSection from './BlankSection';
+import DemoSection, { DemoSectionContentType, DemoSectionDisplayTemplate } from './DemoSection';
 import DemoCard, { DemoCardContentType } from './DemoCard';
 import DemoMedia, { DemoMediaContentType } from './DemoMedia';
 import DemoCallout, { DemoCalloutContentType } from './DemoCallout';
@@ -28,15 +30,19 @@ config({
 initContentTypeRegistry([
   BlankExperienceContentType,
   BlankSectionContentType,
+  DemoSectionContentType,
   DemoCardContentType,
   DemoMediaContentType,
   DemoCalloutContentType,
 ]);
 
+initDisplayTemplateRegistry([DemoSectionDisplayTemplate]);
+
 initReactComponentRegistry({
   resolver: {
     BlankExperience,
     BlankSection,
+    DemoSection,
     DemoCard,
     DemoMedia,
     DemoCallout,

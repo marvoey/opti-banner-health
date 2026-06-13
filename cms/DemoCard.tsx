@@ -20,9 +20,13 @@ type Props = { content: ContentProps<typeof DemoCardContentType> };
 
 export default function DemoCard({ content }: Props) {
   const { pa } = getPreviewUtils(content);
+  // Grid elements aren't wrapped by OptimizelyGridSection, so mark our own
+  // editable block boundary from the composition node (no-op outside the grid).
+  const block = (content as { __composition?: { key: string } }).__composition;
 
   return (
     <article
+      {...pa(block)}
       className={`rounded-2xl border p-6 ${
         content.featured ? 'border-blue-800 bg-blue-50' : 'border-slate-200 bg-white'
       }`}

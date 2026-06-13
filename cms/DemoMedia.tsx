@@ -23,9 +23,12 @@ type Props = { content: ContentProps<typeof DemoMediaContentType> };
 
 export default function DemoMedia({ content }: Props) {
   const { pa, src } = getPreviewUtils(content);
+  // Grid elements aren't wrapped by OptimizelyGridSection, so mark our own
+  // editable block boundary from the composition node (no-op outside the grid).
+  const block = (content as { __composition?: { key: string } }).__composition;
 
   return (
-    <figure className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+    <figure {...pa(block)} className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
       {content.image ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
