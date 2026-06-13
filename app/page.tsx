@@ -5,6 +5,7 @@ import QuickCareCards from './_components/QuickCareCards';
 import ServicesGrid from './_components/ServicesGrid';
 import Testimonial from './_components/Testimonial';
 import Footer from './_components/Footer';
+import PreviewBadge from './_components/PreviewBadge';
 
 /**
  * BANNER HEALTH - GENERIC AWARENESS MOCKUP
@@ -29,9 +30,11 @@ const BannerHomepageMockup = () => {
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
       {/* Overlay Edit Simulation Label (Internal Only) */}
-      <div className="fixed top-4 left-4 z-[100] bg-blue-600 text-white text-[10px] px-2 py-1 rounded font-bold uppercase tracking-widest shadow-lg pointer-events-none">
-        DXP Preview: Draft
-      </div>
+      <PreviewBadge
+        variant="corner"
+        className="bg-blue-600 text-white"
+        label="STAGE 1: Awareness (The Clean State)"
+      />
 
       <TopNav />
       <MainNav />
