@@ -1,9 +1,9 @@
-import TopNav from '../_components/TopNav';
-import MainNav from '../_components/MainNav';
+import TopNav from '../../_components/TopNav';
+import MainNav from '../../_components/MainNav';
 import UrgentCareSearch from './_components/UrgentCareSearch';
 import LocationResults from './_components/LocationResults';
-import Footer from '../_components/Footer';
-import PreviewBadge from '../_components/PreviewBadge';
+import Footer from '../../_components/Footer';
+import PreviewBadge from '../../_components/PreviewBadge';
 
 /**
  * BANNER HEALTH - LOCALIZED URGENCY (PHOENIX URGENT CARE FINDER)

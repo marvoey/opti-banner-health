@@ -1,10 +1,10 @@
-import TopNav from '../../../_components/TopNav';
-import MainNav from '../../../_components/MainNav';
-import PreviewBadge from '../../../_components/PreviewBadge';
+import TopNav from '../../../../_components/TopNav';
+import MainNav from '../../../../_components/MainNav';
+import PreviewBadge from '../../../../_components/PreviewBadge';
 import InstituteHero from './_components/InstituteHero';
 import FeaturedDoctors from './_components/FeaturedDoctors';
 import FacilityInfo from './_components/FacilityInfo';
-import Footer from '../../../_components/Footer';
+import Footer from '../../../../_components/Footer';
 
 /**
  * STAGE 4: FINAL DESTINATION - BANNER UNIVERSITY MEDICINE HEART INSTITUTE

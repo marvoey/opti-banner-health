@@ -12,16 +12,19 @@ import type { NextRequest } from 'next/server';
  *
  * Routing only — NO data fetching here (Next docs explicitly discourage it).
  *
- * POC NOTE: the existing static mock routes (/, /services, /locations) are
- * excluded so this rewrite does not hijack them into the CMS catch-all. As those
- * pages migrate to the CMS, drop them from MOCK_ROUTE_RE.
+ * CMS-first routing: every path flows to the CMS catch-all EXCEPT the static
+ * reference pages, which all live under the `/mock` prefix (see MOCK_ROUTE_RE).
+ * Adding a new CMS page therefore needs no change here.
  */
 
 const DEFAULT_LOCALE = process.env.OPTIMIZELY_DEFAULT_LOCALE || 'en';
 const KNOWN_LOCALES = [DEFAULT_LOCALE];
 
 // Static mock pages that must keep rendering from app/ (not the CMS catch-all).
-const MOCK_ROUTE_RE = /^\/(mock|services|locations)(\/|$)/;
+// All static reference pages live under the single `/mock` prefix. Everything
+// else — `/`, `/services`, any new slug — flows to the CMS catch-all, so adding
+// a new CMS page never requires touching this proxy.
+const MOCK_ROUTE_RE = /^\/mock(\/|$)/;
 
 function firstSegment(pathname: string): string {
   return pathname.split('/')[1] ?? '';

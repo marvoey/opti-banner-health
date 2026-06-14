@@ -33,8 +33,26 @@ export const ServicesGridAutoContentType = contentType({
         { value: 'simple', displayName: 'Simple (compact row)' },
       ],
     },
+    columns: {
+      type: 'string',
+      displayName: 'Columns',
+      description: 'Grid density at desktop width.',
+      group: 'demo',
+      enum: [
+        { value: 'two', displayName: '2 columns' },
+        { value: 'three', displayName: '3 columns' },
+        { value: 'four', displayName: '4 columns' },
+      ],
+    },
   },
 });
+
+// Static class strings (Tailwind can't see interpolated names, so map to literals).
+const GRID_COLS: Record<string, string> = {
+  two: 'grid-cols-1 sm:grid-cols-2',
+  three: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+  four: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
+};
 
 type ServiceContent = Parameters<typeof Service>[0]['content'];
 type Props = { content: ContentProps<typeof ServicesGridAutoContentType> };
@@ -53,6 +71,7 @@ export default async function ServicesGridAuto({ content }: Props) {
     previewContextOf(content),
   );
   const variant: ServiceVariant = content.cardStyle === 'simple' ? 'simple' : 'rich';
+  const cols = GRID_COLS[content.columns ?? 'four'] ?? GRID_COLS.four;
 
   return (
     <section {...pa(block)} className="bg-white py-20">
@@ -75,7 +94,7 @@ export default async function ServicesGridAuto({ content }: Props) {
           ) : null}
         </div>
 
-        <div {...pa('services')} className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        <div {...pa('services')} className={`grid gap-4 ${cols}`}>
           {services.map((svc, i) => (
             <Service key={i} content={svc} variant={variant} />
           ))}

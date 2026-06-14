@@ -30,6 +30,12 @@ import QuickCareCards, {
 import Testimonial, { TestimonialContentType } from './Testimonial';
 import ServicesHero, { ServicesHeroContentType } from './ServicesHero';
 import ServiceCtaBanner, { ServiceCtaBannerContentType } from './ServiceCtaBanner';
+import DetailHero, { DetailHeroContentType } from './DetailHero';
+import ConditionGrid, {
+  Condition,
+  ConditionContentType,
+  ConditionGridContentType,
+} from './ConditionGrid';
 
 /**
  * Single configuration + registration point for the Optimizely SDK.
@@ -62,6 +68,9 @@ initContentTypeRegistry([
   TestimonialContentType,
   ServicesHeroContentType,
   ServiceCtaBannerContentType,
+  DetailHeroContentType,
+  ConditionContentType,
+  ConditionGridContentType,
 ]);
 
 initDisplayTemplateRegistry([
@@ -89,5 +98,8 @@ initReactComponentRegistry({
     BannerDemoTestimonial: Testimonial,
     BannerDemoServicesHero: ServicesHero,
     BannerDemoServiceCtaBanner: ServiceCtaBanner,
+    BannerDemoDetailHero: DetailHero,
+    BannerDemoCondition: Condition,
+    BannerDemoConditionGrid: ConditionGrid,
   },
 });

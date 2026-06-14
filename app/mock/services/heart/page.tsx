@@ -1,9 +1,9 @@
-import TopNav from '../../_components/TopNav';
-import MainNav from '../../_components/MainNav';
+import TopNav from '../../../_components/TopNav';
+import MainNav from '../../../_components/MainNav';
 import HeartHero from './_components/HeartHero';
 import IntentTriggers from './_components/IntentTriggers';
-import Footer from '../../_components/Footer';
-import PreviewBadge from '../../_components/PreviewBadge';
+import Footer from '../../../_components/Footer';
+import PreviewBadge from '../../../_components/PreviewBadge';
 
 /**
  * STAGE 2: BEHAVIORAL INTENT - HEART & CARDIOVASCULAR SERVICES
