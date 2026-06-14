@@ -2,6 +2,8 @@ import { getClient, type PreviewParams } from '@optimizely/cms-sdk';
 import { OptimizelyComponent, withAppContext } from '@optimizely/cms-sdk/react/server';
 import { PreviewComponent } from '@optimizely/cms-sdk/react/client';
 import Script from 'next/script';
+import SiteChrome from '../_components/SiteChrome';
+import PreviewBadge from '../_components/PreviewBadge';
 
 // Preview is always per-request (preview tokens, draft versions) — never cached.
 export const dynamic = 'force-dynamic';
@@ -42,16 +44,24 @@ async function Page({ searchParams }: Props) {
     <>
       <Script src={injectorSrc} strategy="afterInteractive" />
       <PreviewComponent />
+      {/* Internal preview indicator — only on /preview, never the published page. */}
+      <PreviewBadge variant="corner" className="bg-blue-600 text-white" label="Preview" />
       {isSharedBlock ? (
+        // A single shared block — preview it bare (no full-page chrome).
         <div className="preview-block-shell mx-auto max-w-3xl p-6">
           <OptimizelyComponent content={content} />
         </div>
       ) : isExperience ? (
-        <main className="preview-experience-shell">
-          <OptimizelyComponent content={content} />
-        </main>
+        // Full experience — wrap in site chrome so preview matches the published page.
+        <SiteChrome>
+          <main className="preview-experience-shell">
+            <OptimizelyComponent content={content} />
+          </main>
+        </SiteChrome>
       ) : (
-        <OptimizelyComponent content={content} />
+        <SiteChrome>
+          <OptimizelyComponent content={content} />
+        </SiteChrome>
       )}
     </>
   );

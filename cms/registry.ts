@@ -8,13 +8,28 @@ import {
 import { initReactComponentRegistry } from '@optimizely/cms-sdk/react/server';
 
 import BlankExperience from './BlankExperience';
-import BlankSection from './BlankSection';
+import BlankSection, { BlankSectionDisplayTemplate } from './BlankSection';
 import DemoSection, { DemoSectionContentType, DemoSectionDisplayTemplate } from './DemoSection';
 import Hero, { HeroContentType } from './Hero';
+import Service, { ServiceContentType } from './Service';
 import DemoText, { DemoTextContentType } from './DemoText';
 import DemoCard, { DemoCardContentType } from './DemoCard';
 import DemoMedia, { DemoMediaContentType } from './DemoMedia';
 import DemoCallout, { DemoCalloutContentType } from './DemoCallout';
+import ServicesGrid, {
+  ServicesGridContentType,
+  ServicesGridDisplayTemplate,
+} from './ServicesGrid';
+import ServicesHeader, { ServicesHeaderContentType } from './ServicesHeader';
+import ServicesGridAuto, { ServicesGridAutoContentType } from './ServicesGridAuto';
+import QuickCareCards, {
+  QuickCareCard,
+  QuickCareCardContentType,
+  QuickCareCardsContentType,
+} from './QuickCareCards';
+import Testimonial, { TestimonialContentType } from './Testimonial';
+import ServicesHero, { ServicesHeroContentType } from './ServicesHero';
+import ServiceCtaBanner, { ServiceCtaBannerContentType } from './ServiceCtaBanner';
 
 /**
  * Single configuration + registration point for the Optimizely SDK.
@@ -34,13 +49,26 @@ initContentTypeRegistry([
   BlankSectionContentType,
   DemoSectionContentType,
   HeroContentType,
+  ServiceContentType,
   DemoTextContentType,
   DemoCardContentType,
   DemoMediaContentType,
   DemoCalloutContentType,
+  ServicesGridContentType,
+  ServicesHeaderContentType,
+  ServicesGridAutoContentType,
+  QuickCareCardContentType,
+  QuickCareCardsContentType,
+  TestimonialContentType,
+  ServicesHeroContentType,
+  ServiceCtaBannerContentType,
 ]);
 
-initDisplayTemplateRegistry([DemoSectionDisplayTemplate]);
+initDisplayTemplateRegistry([
+  DemoSectionDisplayTemplate,
+  ServicesGridDisplayTemplate,
+  BlankSectionDisplayTemplate,
+]);
 
 initReactComponentRegistry({
   resolver: {
@@ -48,9 +76,18 @@ initReactComponentRegistry({
     BlankSection,
     DemoSection,
     BannerDemoHero: Hero,
+    BannerDemoService: Service,
     DemoText,
     DemoCard,
     DemoMedia,
     DemoCallout,
+    BannerDemoServicesGrid: ServicesGrid,
+    BannerDemoServicesHeader: ServicesHeader,
+    BannerDemoServicesGridAuto: ServicesGridAuto,
+    BannerDemoQuickCareCard: QuickCareCard,
+    BannerDemoQuickCareCards: QuickCareCards,
+    BannerDemoTestimonial: Testimonial,
+    BannerDemoServicesHero: ServicesHero,
+    BannerDemoServiceCtaBanner: ServiceCtaBanner,
   },
 });

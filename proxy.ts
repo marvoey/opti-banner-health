@@ -21,7 +21,7 @@ const DEFAULT_LOCALE = process.env.OPTIMIZELY_DEFAULT_LOCALE || 'en';
 const KNOWN_LOCALES = [DEFAULT_LOCALE];
 
 // Static mock pages that must keep rendering from app/ (not the CMS catch-all).
-const MOCK_ROUTE_RE = /^\/(services|locations)(\/|$)/;
+const MOCK_ROUTE_RE = /^\/(mock|services|locations)(\/|$)/;
 
 function firstSegment(pathname: string): string {
   return pathname.split('/')[1] ?? '';
@@ -30,8 +30,9 @@ function firstSegment(pathname: string): string {
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
-  // Leave the static mock routes (and the mock home) untouched.
-  if (pathname === '/' || MOCK_ROUTE_RE.test(pathname)) {
+  // Leave the remaining static mock routes untouched. The home page ("/") is now
+  // CMS-served, so it falls through to the rewrite below (→ /en/ → catch-all).
+  if (MOCK_ROUTE_RE.test(pathname)) {
     return NextResponse.next();
   }
 

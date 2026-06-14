@@ -24,6 +24,12 @@ export const HeroContentType = contentType({
       allowedTypes: ['_image'],
       group: 'demo',
     },
+    imageUrl: {
+      type: 'string',
+      displayName: 'Background Image URL',
+      description: 'Optional. A full image URL — overrides the Background Image asset when set.',
+      group: 'demo',
+    },
     imageAlt: { type: 'string', displayName: 'Image Alt Text', group: 'demo' },
   },
 });
@@ -36,10 +42,18 @@ export default function Hero({ content }: Props) {
   // editable block boundary from the composition node (no-op outside the grid).
   const block = (content as { __composition?: { key: string } }).__composition;
 
-  const primaryHref = content.primaryCta?.url?.default ?? undefined;
+  // In edit/VB mode, suppress href/target so clicking a CTA to edit it doesn't
+  // navigate away (no-op on the published site, where __context.edit is false).
+  const edit = (content as { __context?: { edit?: boolean } }).__context?.edit;
+  const primaryHref = edit ? undefined : content.primaryCta?.url?.default ?? undefined;
   const primaryLabel = content.primaryCta?.text || content.primaryCta?.title;
-  const secondaryHref = content.secondaryCta?.url?.default ?? undefined;
+  const secondaryHref = edit ? undefined : content.secondaryCta?.url?.default ?? undefined;
   const secondaryLabel = content.secondaryCta?.text || content.secondaryCta?.title;
+
+  // Background image priority: the `imageUrl` string overrides the DAM `image`
+  // asset; if neither is set the section falls back to the bare gradient.
+  const usingUrl = !!content.imageUrl;
+  const imageSrc = usingUrl ? content.imageUrl : content.image ? src(content.image) : undefined;
 
   return (
     <section
@@ -48,11 +62,11 @@ export default function Hero({ content }: Props) {
     >
       {/* Hero Background Image */}
       <div className="absolute inset-0 opacity-80 transition-transform duration-700 hover:scale-105">
-        {content.image ? (
+        {imageSrc ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            {...pa('image')}
-            src={src(content.image)}
+            {...pa(usingUrl ? 'imageUrl' : 'image')}
+            src={imageSrc}
             alt={content.imageAlt ?? ''}
             className="w-full h-full object-cover"
           />
@@ -88,7 +102,7 @@ export default function Hero({ content }: Props) {
               <a
                 {...pa('primaryCta')}
                 href={primaryHref}
-                target={content.primaryCta?.target ?? undefined}
+                target={edit ? undefined : content.primaryCta?.target ?? undefined}
                 className="px-8 py-4 bg-yellow-500 text-blue-950 font-bold rounded-full text-lg hover:bg-yellow-400 transform transition-all hover:scale-105 shadow-lg active:scale-95"
               >
                 {primaryLabel || 'Learn more'}
@@ -98,7 +112,7 @@ export default function Hero({ content }: Props) {
               <a
                 {...pa('secondaryCta')}
                 href={secondaryHref}
-                target={content.secondaryCta?.target ?? undefined}
+                target={edit ? undefined : content.secondaryCta?.target ?? undefined}
                 className="px-8 py-4 bg-white/10 backdrop-blur-md border-2 border-white text-white font-bold rounded-full text-lg hover:bg-white hover:text-blue-950 transition-all"
               >
                 {secondaryLabel || 'Learn more'}

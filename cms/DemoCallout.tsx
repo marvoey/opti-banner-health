@@ -22,7 +22,11 @@ export default function DemoCallout({ content }: Props) {
   // editable block boundary from the composition node (no-op outside the grid).
   const block = (content as { __composition?: { key: string } }).__composition;
 
-  const href = content.cta?.url?.default ?? undefined;
+  // In edit/VB mode, suppress href/target so clicking the CTA to edit it doesn't
+  // navigate away (no-op on the published site, where __context.edit is false).
+  const edit = (content as { __context?: { edit?: boolean } }).__context?.edit;
+  const ctaUrl = content.cta?.url?.default ?? undefined;
+  const href = edit ? undefined : ctaUrl;
   const label = content.cta?.text || content.cta?.title || 'Learn more';
   const date = content.publishedDate ? new Date(content.publishedDate) : null;
 
@@ -36,11 +40,11 @@ export default function DemoCallout({ content }: Props) {
           {date.toLocaleDateString()}
         </p>
       ) : null}
-      {href ? (
+      {edit || ctaUrl ? (
         <a
           {...pa('cta')}
           href={href}
-          target={content.cta?.target ?? undefined}
+          target={edit ? undefined : content.cta?.target ?? undefined}
           className="mt-4 inline-block rounded-full bg-[#FFD100] px-6 py-3 font-bold text-blue-900"
         >
           {label}

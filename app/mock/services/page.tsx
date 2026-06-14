@@ -1,9 +1,9 @@
-import TopNav from '../_components/TopNav';
-import MainNav from '../_components/MainNav';
+import TopNav from '../../_components/TopNav';
+import MainNav from '../../_components/MainNav';
 import ServicesHero from './_components/ServicesHero';
 import ServiceCategories from './_components/ServiceCategories';
-import Footer from '../_components/Footer';
-import PreviewBadge from '../_components/PreviewBadge';
+import Footer from '../../_components/Footer';
+import PreviewBadge from '../../_components/PreviewBadge';
 
 /**
  * BANNER HEALTH - SERVICES INDEX

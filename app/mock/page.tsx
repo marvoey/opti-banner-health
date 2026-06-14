@@ -1,11 +1,11 @@
-import TopNav from './_components/TopNav';
-import MainNav from './_components/MainNav';
-import Hero, { type HeroContent } from './_components/Hero';
-import QuickCareCards from './_components/QuickCareCards';
-import ServicesGrid from './_components/ServicesGrid';
-import Testimonial from './_components/Testimonial';
-import Footer from './_components/Footer';
-import PreviewBadge from './_components/PreviewBadge';
+import TopNav from '../_components/TopNav';
+import MainNav from '../_components/MainNav';
+import Hero, { type HeroContent } from '../_components/Hero';
+import QuickCareCards from '../_components/QuickCareCards';
+import ServicesGrid from '../_components/ServicesGrid';
+import Testimonial from '../_components/Testimonial';
+import Footer from '../_components/Footer';
+import PreviewBadge from '../_components/PreviewBadge';
 
 /**
  * BANNER HEALTH - GENERIC AWARENESS MOCKUP
