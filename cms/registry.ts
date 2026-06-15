@@ -42,6 +42,13 @@ import LocationResults, {
   LocationContentType,
   LocationResultsContentType,
 } from './LocationResults';
+import FacilityHero, { FacilityHeroContentType } from './FacilityHero';
+import FacilityInfo, { FacilityInfoContentType } from './FacilityInfo';
+import FeaturedDoctors, {
+  Doctor,
+  DoctorContentType,
+  FeaturedDoctorsContentType,
+} from './FeaturedDoctors';
 
 /**
  * Single configuration + registration point for the Optimizely SDK.
@@ -80,6 +87,10 @@ initContentTypeRegistry([
   LocationSearchHeroContentType,
   LocationContentType,
   LocationResultsContentType,
+  FacilityHeroContentType,
+  FacilityInfoContentType,
+  DoctorContentType,
+  FeaturedDoctorsContentType,
 ]);
 
 initDisplayTemplateRegistry([
@@ -113,5 +124,9 @@ initReactComponentRegistry({
     BannerDemoLocationSearchHero: LocationSearchHero,
     BannerDemoLocation: Location,
     BannerDemoLocationResults: LocationResults,
+    BannerDemoFacilityHero: FacilityHero,
+    BannerDemoFacilityInfo: FacilityInfo,
+    BannerDemoDoctor: Doctor,
+    BannerDemoFeaturedDoctors: FeaturedDoctors,
   },
 });
