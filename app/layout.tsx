@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import "@/cms/registry";
 
@@ -28,17 +29,24 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <head>
+      <body className="min-h-full flex flex-col">
+        {children}
         {/*
-          Optimizely Web Experimentation snippet. Loaded as a synchronous, render-
-          blocking script at the top of <head> (no async/defer) so it executes
-          before first paint and avoids experiment flicker — the intentional
-          trade-off the no-sync-scripts lint rule warns about.
+          Optimizely Web Experimentation snippet, loaded via next/script.
+
+          Strategy is `afterInteractive` (NOT beforeInteractive / a sync <head>
+          script): the Web snippet mutates the DOM, and running it before React
+          hydrates rewrites the SSR markup, causing hydration mismatches that make
+          React revert the experiment. afterInteractive applies experiments after
+          hydration — some flicker, but React stays stable. For flicker-free,
+          React-native experimentation use Optimizely Feature Experimentation
+          (server-side / React SDK) instead of this DOM-mutation snippet.
         */}
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script src="https://cdn.optimizely.com/js/5950577065066496.js" />
-      </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+        <Script
+          src="https://cdn.optimizely.com/js/5950577065066496.js"
+          strategy="afterInteractive"
+        />
+      </body>
     </html>
   );
 }
