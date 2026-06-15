@@ -2,6 +2,9 @@
   "name": "nextjs-banner",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "next dev -p 3006",
     "predev": "npm run gen:locales",
@@ -9,7 +12,7 @@
     "prebuild": "npm run gen:locales",
     "start": "next start",
     "lint": "eslint",
-    "gen:locales": "node --env-file=.env scripts/generate-locales.mjs",
+    "gen:locales": "node --env-file-if-exists=.env scripts/generate-locales.mjs",
     "config:push": "npx @optimizely/cms-cli config push optimizely.config.mjs"
   },
   "dependencies": {
