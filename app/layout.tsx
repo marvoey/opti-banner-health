@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import OptimizelyActivation from "./_components/OptimizelyActivation";
 import "./globals.css";
 import "@/cms/registry";
 
@@ -46,6 +47,8 @@ export default function RootLayout({
           src="https://cdn.optimizely.com/js/5950577065066496.js"
           strategy="afterInteractive"
         />
+        {/* Re-activate the Web snippet on client-side route changes (soft navigations). */}
+        <OptimizelyActivation />
       </body>
     </html>
   );
