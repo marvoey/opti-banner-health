@@ -28,6 +28,16 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        {/*
+          Optimizely Web Experimentation snippet. Loaded as a synchronous, render-
+          blocking script at the top of <head> (no async/defer) so it executes
+          before first paint and avoids experiment flicker — the intentional
+          trade-off the no-sync-scripts lint rule warns about.
+        */}
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script src="https://cdn.optimizely.com/js/5950577065066496.js" />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
