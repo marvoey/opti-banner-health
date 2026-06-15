@@ -13,24 +13,26 @@ export const HeroContentType = contentType({
   displayName: 'Hero Banner',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    kicker: { type: 'string', displayName: 'Kicker', group: 'demo' },
-    headline: { type: 'string', displayName: 'Headline', group: 'demo' },
-    description: { type: 'string', displayName: 'Description', group: 'demo' },
-    primaryCta: { type: 'link', displayName: 'Primary CTA', group: 'demo' },
-    secondaryCta: { type: 'link', displayName: 'Secondary CTA', group: 'demo' },
+    kicker: { type: 'string', displayName: 'Kicker', group: 'demo', isLocalized: true },
+    headline: { type: 'string', displayName: 'Headline', group: 'demo', isLocalized: true },
+    description: { type: 'string', displayName: 'Description', group: 'demo', isLocalized: true },
+    primaryCta: { type: 'link', displayName: 'Primary CTA', group: 'demo', isLocalized: true },
+    secondaryCta: { type: 'link', displayName: 'Secondary CTA', group: 'demo', isLocalized: true },
     image: {
       type: 'contentReference',
       displayName: 'Background Image',
       allowedTypes: ['_image'],
       group: 'demo',
+      isLocalized: true,
     },
     imageUrl: {
       type: 'string',
       displayName: 'Background Image URL',
       description: 'Optional. A full image URL — overrides the Background Image asset when set.',
       group: 'demo',
+      isLocalized: true,
     },
-    imageAlt: { type: 'string', displayName: 'Image Alt Text', group: 'demo' },
+    imageAlt: { type: 'string', displayName: 'Image Alt Text', group: 'demo', isLocalized: true },
   },
 });
 

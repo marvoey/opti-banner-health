@@ -12,9 +12,9 @@ export const ServiceCtaBannerContentType = contentType({
   displayName: 'Service CTA Banner',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    heading: { type: 'string', displayName: 'Heading', group: 'demo' },
-    description: { type: 'string', displayName: 'Description', group: 'demo' },
-    cta: { type: 'link', displayName: 'Call to Action', group: 'demo' },
+    heading: { type: 'string', displayName: 'Heading', group: 'demo', isLocalized: true },
+    description: { type: 'string', displayName: 'Description', group: 'demo', isLocalized: true },
+    cta: { type: 'link', displayName: 'Call to Action', group: 'demo', isLocalized: true },
   },
 });
 

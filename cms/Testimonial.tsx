@@ -12,8 +12,8 @@ export const TestimonialContentType = contentType({
   displayName: 'Testimonial',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    quote: { type: 'string', displayName: 'Quote', group: 'demo' },
-    attribution: { type: 'string', displayName: 'Attribution', group: 'demo' },
+    quote: { type: 'string', displayName: 'Quote', group: 'demo', isLocalized: true },
+    attribution: { type: 'string', displayName: 'Attribution', group: 'demo', isLocalized: true },
   },
 });
 

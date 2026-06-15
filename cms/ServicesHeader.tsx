@@ -13,9 +13,9 @@ export const ServicesHeaderContentType = contentType({
   displayName: 'Services Header',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    title: { type: 'string', displayName: 'Title', group: 'demo' },
-    description: { type: 'string', displayName: 'Description', group: 'demo' },
-    cta: { type: 'link', displayName: 'View-All CTA', group: 'demo' },
+    title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },
+    description: { type: 'string', displayName: 'Description', group: 'demo', isLocalized: true },
+    cta: { type: 'link', displayName: 'View-All CTA', group: 'demo', isLocalized: true },
   },
 });
 

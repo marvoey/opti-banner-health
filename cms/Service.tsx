@@ -16,12 +16,13 @@ export const ServiceContentType = contentType({
   displayName: 'Service',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    name: { type: 'string', displayName: 'Service Name', group: 'demo', isRequired: true },
-    description: { type: 'string', displayName: 'Clinical Description', group: 'demo' },
+    name: { type: 'string', displayName: 'Service Name', group: 'demo', isRequired: true, isLocalized: true },
+    description: { type: 'string', displayName: 'Clinical Description', group: 'demo', isLocalized: true },
     category: {
       type: 'string',
       displayName: 'Category',
       group: 'demo',
+      isLocalized: true,
       enum: [
         { value: 'everyday', displayName: 'Everyday Medicine' },
         { value: 'specialty', displayName: 'Specialty Care' },
@@ -32,12 +33,14 @@ export const ServiceContentType = contentType({
       type: 'array',
       displayName: 'Taxonomy Tags',
       group: 'demo',
+      isLocalized: true,
       items: { type: 'string' },
     },
     icon: {
       type: 'string',
       displayName: 'Icon',
       group: 'demo',
+      isLocalized: true,
       enum: [
         { value: 'heart', displayName: 'Heart / Cardiology' },
         { value: 'stethoscope', displayName: 'Primary Care' },
@@ -47,8 +50,8 @@ export const ServiceContentType = contentType({
         { value: 'bone', displayName: 'Orthopedics' },
       ],
     },
-    link: { type: 'link', displayName: 'Detail Page Link', group: 'demo' },
-    featured: { type: 'boolean', displayName: 'Featured', group: 'demo' },
+    link: { type: 'link', displayName: 'Detail Page Link', group: 'demo', isLocalized: true },
+    featured: { type: 'boolean', displayName: 'Featured', group: 'demo', isLocalized: true },
   },
 });
 

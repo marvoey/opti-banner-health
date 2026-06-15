@@ -1,12 +1,72 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Phone } from 'lucide-react';
 
+type Location = {
+  name: string;
+  address: string;
+  wait: number; // minutes
+  status: string;
+};
+
+// Realistic per-location wait behaviour. Each clinic drifts around its own
+// baseline so busier sites stay busy while quieter ones stay quiet.
+const SEED: Location[] = [
+  { name: "Banner Urgent Care - Phoenix (7th St)", address: "4201 N 7th St, Phoenix, AZ 85014", wait: 12, status: "Open until 9:00 PM" },
+  { name: "Banner Urgent Care - Phoenix (Thomas Rd)", address: "2025 W Thomas Rd, Phoenix, AZ 85015", wait: 5, status: "Open until 9:00 PM" },
+  { name: "Banner Urgent Care - Arcadia", address: "3801 E Indian School Rd, Phoenix, AZ 85018", wait: 25, status: "Open until 9:00 PM" },
+];
+
+const MIN_WAIT = 3;
+const MAX_WAIT = 55;
+
+// Nudge a wait time by a small, slightly mean-reverting amount so values feel
+// like a live queue rather than a random walk that drifts off to the extremes.
+const nextWait = (current: number, baseline: number) => {
+  const pull = (baseline - current) * 0.15; // gentle reversion toward baseline
+  const noise = Math.round((Math.random() - 0.5) * 6); // -3..+3 minutes
+  const next = Math.round(current + pull + noise);
+  return Math.max(MIN_WAIT, Math.min(MAX_WAIT, next));
+};
+
+const waitStyle = (wait: number) => {
+  if (wait <= 10) return "bg-green-50 text-green-700 border-green-100";
+  if (wait <= 25) return "bg-amber-50 text-amber-700 border-amber-100";
+  return "bg-red-50 text-red-700 border-red-100";
+};
+
 const LocationResults = () => {
-  const locations = [
-    { name: "Banner Urgent Care - Phoenix (7th St)", address: "4201 N 7th St, Phoenix, AZ 85014", wait: "12 min", status: "Open until 9:00 PM" },
-    { name: "Banner Urgent Care - Phoenix (Thomas Rd)", address: "2025 W Thomas Rd, Phoenix, AZ 85015", wait: "5 min", status: "Open until 9:00 PM" },
-    { name: "Banner Urgent Care - Arcadia", address: "3801 E Indian School Rd, Phoenix, AZ 85018", wait: "25 min", status: "Open until 9:00 PM" },
-  ];
+  const [locations, setLocations] = useState<Location[]>(SEED);
+  // Baselines stay fixed; waits revert toward them.
+  const [baselines] = useState<number[]>(() => SEED.map((l) => l.wait));
+  const [pulse, setPulse] = useState<number | null>(null);
+  const [updatedAgo, setUpdatedAgo] = useState(0);
+
+  useEffect(() => {
+    // Stagger each clinic on its own cadence so they never all tick together.
+    const timers = SEED.map((_, i) =>
+      setInterval(() => {
+        setLocations((prev) =>
+          prev.map((loc, j) =>
+            j === i ? { ...loc, wait: nextWait(loc.wait, baselines[j]) } : loc
+          )
+        );
+        setPulse(i);
+        setUpdatedAgo(0);
+        // Clear the highlight shortly after it fires.
+        setTimeout(() => setPulse((p) => (p === i ? null : p)), 1200);
+      }, 4000 + i * 1700)
+    );
+
+    const ticker = setInterval(() => setUpdatedAgo((s) => s + 1), 1000);
+
+    return () => {
+      timers.forEach(clearInterval);
+      clearInterval(ticker);
+    };
+  }, [baselines]);
 
   return (
     <main className="container mx-auto px-12 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12" data-cms-component="LocationResults">
@@ -18,6 +78,16 @@ const LocationResults = () => {
             <option>Sort by Distance</option>
             <option>Sort by Wait Time</option>
           </select>
+        </div>
+
+        <div className="flex items-center gap-2 mb-2">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+          </span>
+          <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+            Live wait times · updated {updatedAgo === 0 ? 'just now' : `${updatedAgo}s ago`}
+          </span>
         </div>
 
         {locations.map((loc, i) => (
@@ -32,8 +102,10 @@ const LocationResults = () => {
                 <p className="text-slate-500 text-sm font-medium italic leading-relaxed">{loc.address}</p>
               </div>
               <div className="text-right">
-                <div className="bg-green-50 text-green-700 px-4 py-2 rounded-2xl text-xs font-black uppercase tracking-widest border border-green-100 mb-2">
-                  {loc.wait} Wait
+                <div
+                  className={`px-4 py-2 rounded-2xl text-xs font-black uppercase tracking-widest border mb-2 transition-all duration-500 ${waitStyle(loc.wait)} ${pulse === i ? 'scale-105 ring-2 ring-[#FFD100]' : 'scale-100'}`}
+                >
+                  {loc.wait} min Wait
                 </div>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{loc.status}</p>
               </div>

@@ -6,7 +6,8 @@
     "dev": "next dev -p 3006",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "config:push": "npx @optimizely/cms-cli config push optimizely.config.mjs"
   },
   "dependencies": {
     "@optimizely/cms-cli": "^2.0.0",

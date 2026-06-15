@@ -16,12 +16,12 @@ export const LocationContentType = contentType({
   displayName: 'Location',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    name: { type: 'string', displayName: 'Name', group: 'demo' },
-    address: { type: 'string', displayName: 'Address', group: 'demo' },
-    wait: { type: 'string', displayName: 'Wait Time', group: 'demo' },
-    status: { type: 'string', displayName: 'Status', group: 'demo' },
-    scheduleLink: { type: 'link', displayName: 'Schedule Link', group: 'demo' },
-    phone: { type: 'string', displayName: 'Phone', group: 'demo' },
+    name: { type: 'string', displayName: 'Name', group: 'demo', isLocalized: true },
+    address: { type: 'string', displayName: 'Address', group: 'demo', isLocalized: true },
+    wait: { type: 'string', displayName: 'Wait Time', group: 'demo', isLocalized: true },
+    status: { type: 'string', displayName: 'Status', group: 'demo', isLocalized: true },
+    scheduleLink: { type: 'link', displayName: 'Schedule Link', group: 'demo', isLocalized: true },
+    phone: { type: 'string', displayName: 'Phone', group: 'demo', isLocalized: true },
   },
 });
 
@@ -39,16 +39,18 @@ export const LocationResultsContentType = contentType({
       type: 'array',
       displayName: 'Locations',
       group: 'demo',
+      isLocalized: true,
       items: { type: 'contentReference', allowedTypes: [LocationContentType] },
     },
-    sortLabel: { type: 'string', displayName: 'Sort Label', group: 'demo' },
+    sortLabel: { type: 'string', displayName: 'Sort Label', group: 'demo', isLocalized: true },
     mapImageUrl: {
       type: 'string',
       displayName: 'Map Image URL',
       description: 'Background image for the static map placeholder.',
       group: 'demo',
+      isLocalized: true,
     },
-    mapLoadingLabel: { type: 'string', displayName: 'Map Loading Label', group: 'demo' },
+    mapLoadingLabel: { type: 'string', displayName: 'Map Loading Label', group: 'demo', isLocalized: true },
   },
 });
 

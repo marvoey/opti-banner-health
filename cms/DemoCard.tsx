@@ -9,10 +9,10 @@ export const DemoCardContentType = contentType({
   displayName: 'Demo Card',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    heading: { type: 'string', displayName: 'Heading', group: 'demo' },
-    body: { type: 'richText', displayName: 'Body', group: 'demo' },
-    featured: { type: 'boolean', displayName: 'Featured', group: 'demo' },
-    sortIndex: { type: 'integer', displayName: 'Sort Index', group: 'demo' },
+    heading: { type: 'string', displayName: 'Heading', group: 'demo', isLocalized: true },
+    body: { type: 'richText', displayName: 'Body', group: 'demo', isLocalized: true },
+    featured: { type: 'boolean', displayName: 'Featured', group: 'demo', isLocalized: true },
+    sortIndex: { type: 'integer', displayName: 'Sort Index', group: 'demo', isLocalized: true },
   },
 });
 

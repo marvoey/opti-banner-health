@@ -14,7 +14,7 @@ export const DemoTextContentType = contentType({
   displayName: 'Demo Text',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    text: { type: 'richText', displayName: 'Text', group: 'demo' },
+    text: { type: 'richText', displayName: 'Text', group: 'demo', isLocalized: true },
   },
 });
 

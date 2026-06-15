@@ -13,9 +13,10 @@ export const DemoMediaContentType = contentType({
       displayName: 'Image',
       allowedTypes: ['_image'],
       group: 'demo',
+      isLocalized: true,
     },
-    altText: { type: 'string', displayName: 'Alt Text', group: 'demo' },
-    caption: { type: 'string', displayName: 'Caption', group: 'demo' },
+    altText: { type: 'string', displayName: 'Alt Text', group: 'demo', isLocalized: true },
+    caption: { type: 'string', displayName: 'Caption', group: 'demo', isLocalized: true },
   },
 });
 

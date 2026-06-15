@@ -14,12 +14,13 @@ export const ConditionContentType = contentType({
   displayName: 'Condition',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    title: { type: 'string', displayName: 'Title', group: 'demo' },
-    description: { type: 'string', displayName: 'Description', group: 'demo' },
+    title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },
+    description: { type: 'string', displayName: 'Description', group: 'demo', isLocalized: true },
     icon: {
       type: 'string',
       displayName: 'Icon',
       group: 'demo',
+      isLocalized: true,
       enum: [
         { value: 'heart', displayName: 'Heart' },
         { value: 'activity', displayName: 'Activity' },
@@ -29,7 +30,7 @@ export const ConditionContentType = contentType({
         { value: 'stethoscope', displayName: 'Stethoscope' },
       ],
     },
-    cta: { type: 'link', displayName: 'CTA', group: 'demo' },
+    cta: { type: 'link', displayName: 'CTA', group: 'demo', isLocalized: true },
   },
 });
 
@@ -43,18 +44,20 @@ export const ConditionGridContentType = contentType({
   displayName: 'Condition Grid',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    heading: { type: 'string', displayName: 'Heading', group: 'demo' },
-    description: { type: 'string', displayName: 'Description', group: 'demo' },
+    heading: { type: 'string', displayName: 'Heading', group: 'demo', isLocalized: true },
+    description: { type: 'string', displayName: 'Description', group: 'demo', isLocalized: true },
     trackingLabel: {
       type: 'string',
       displayName: 'Tracking Badge',
       description: 'Text for the pinging "intent tracking" badge. Leave empty to hide it.',
       group: 'demo',
+      isLocalized: true,
     },
     conditions: {
       type: 'array',
       displayName: 'Conditions',
       group: 'demo',
+      isLocalized: true,
       items: { type: 'contentReference', allowedTypes: [ConditionContentType] },
     },
   },

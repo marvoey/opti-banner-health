@@ -14,13 +14,14 @@ export const ServicesGridAutoContentType = contentType({
   displayName: 'Services Grid (Auto)',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    title: { type: 'string', displayName: 'Title', group: 'demo' },
-    description: { type: 'string', displayName: 'Description', group: 'demo' },
-    cta: { type: 'link', displayName: 'View-All CTA', group: 'demo' },
+    title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },
+    description: { type: 'string', displayName: 'Description', group: 'demo', isLocalized: true },
+    cta: { type: 'link', displayName: 'View-All CTA', group: 'demo', isLocalized: true },
     services: {
       type: 'array',
       displayName: 'Services',
       group: 'demo',
+      isLocalized: true,
       items: { type: 'contentReference', allowedTypes: [ServiceContentType] },
     },
     cardStyle: {
@@ -28,6 +29,7 @@ export const ServicesGridAutoContentType = contentType({
       displayName: 'Card Style',
       description: 'How the referenced Service cards render — the same content, two presentations.',
       group: 'demo',
+      isLocalized: true,
       enum: [
         { value: 'rich', displayName: 'Rich (icon + description)' },
         { value: 'simple', displayName: 'Simple (compact row)' },
@@ -38,6 +40,7 @@ export const ServicesGridAutoContentType = contentType({
       displayName: 'Columns',
       description: 'Grid density at desktop width.',
       group: 'demo',
+      isLocalized: true,
       enum: [
         { value: 'two', displayName: '2 columns' },
         { value: 'three', displayName: '3 columns' },

@@ -15,12 +15,13 @@ export const QuickCareCardContentType = contentType({
   displayName: 'Quick Care Card',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    title: { type: 'string', displayName: 'Title', group: 'demo' },
-    description: { type: 'string', displayName: 'Description', group: 'demo' },
+    title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },
+    description: { type: 'string', displayName: 'Description', group: 'demo', isLocalized: true },
     icon: {
       type: 'string',
       displayName: 'Icon',
       group: 'demo',
+      isLocalized: true,
       enum: [
         { value: 'doctor', displayName: 'Find a Doctor' },
         { value: 'urgent', displayName: 'Urgent Care' },
@@ -28,7 +29,7 @@ export const QuickCareCardContentType = contentType({
         { value: 'events', displayName: 'Classes & Events' },
       ],
     },
-    link: { type: 'link', displayName: 'Link', group: 'demo' },
+    link: { type: 'link', displayName: 'Link', group: 'demo', isLocalized: true },
   },
 });
 
@@ -49,6 +50,7 @@ export const QuickCareCardsContentType = contentType({
       type: 'array',
       displayName: 'Cards',
       group: 'demo',
+      isLocalized: true,
       items: { type: 'contentReference', allowedTypes: [QuickCareCardContentType] },
     },
   },

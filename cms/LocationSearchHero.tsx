@@ -13,9 +13,9 @@ export const LocationSearchHeroContentType = contentType({
   displayName: 'Location Search Hero',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    headline: { type: 'string', displayName: 'Headline', group: 'demo' },
-    searchPlaceholder: { type: 'string', displayName: 'Search Placeholder', group: 'demo' },
-    ctaLabel: { type: 'string', displayName: 'CTA Label', group: 'demo' },
+    headline: { type: 'string', displayName: 'Headline', group: 'demo', isLocalized: true },
+    searchPlaceholder: { type: 'string', displayName: 'Search Placeholder', group: 'demo', isLocalized: true },
+    ctaLabel: { type: 'string', displayName: 'CTA Label', group: 'demo', isLocalized: true },
   },
 });
 

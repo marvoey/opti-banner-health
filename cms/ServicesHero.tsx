@@ -13,9 +13,9 @@ export const ServicesHeroContentType = contentType({
   displayName: 'Services Hero',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    headline: { type: 'string', displayName: 'Headline', group: 'demo' },
-    description: { type: 'string', displayName: 'Description', group: 'demo' },
-    searchPlaceholder: { type: 'string', displayName: 'Search Placeholder', group: 'demo' },
+    headline: { type: 'string', displayName: 'Headline', group: 'demo', isLocalized: true },
+    description: { type: 'string', displayName: 'Description', group: 'demo', isLocalized: true },
+    searchPlaceholder: { type: 'string', displayName: 'Search Placeholder', group: 'demo', isLocalized: true },
   },
 });
 

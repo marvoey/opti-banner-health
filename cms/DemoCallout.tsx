@@ -8,9 +8,9 @@ export const DemoCalloutContentType = contentType({
   displayName: 'Demo Callout',
   compositionBehaviors: ['elementEnabled'],
   properties: {
-    title: { type: 'string', displayName: 'Title', group: 'demo' },
-    cta: { type: 'link', displayName: 'Call to Action', group: 'demo' },
-    publishedDate: { type: 'dateTime', displayName: 'Published Date', group: 'demo' },
+    title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },
+    cta: { type: 'link', displayName: 'Call to Action', group: 'demo', isLocalized: true },
+    publishedDate: { type: 'dateTime', displayName: 'Published Date', group: 'demo', isLocalized: true },
   },
 });
 
