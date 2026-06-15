@@ -6,7 +6,7 @@ import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 export const DemoCardContentType = contentType({
   key: 'DemoCard',
   baseType: '_component',
-  displayName: 'Demo Card',
+  displayName: 'Banner: Demo Card',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     heading: { type: 'string', displayName: 'Heading', group: 'demo', isLocalized: true },

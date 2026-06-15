@@ -5,7 +5,7 @@ import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 export const DemoCalloutContentType = contentType({
   key: 'DemoCallout',
   baseType: '_component',
-  displayName: 'Demo Callout',
+  displayName: 'Banner: Demo Callout',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },

@@ -13,7 +13,7 @@ import { Heart, Stethoscope, Activity, Baby, Brain, Bone, ChevronRight } from 'l
 export const ServiceContentType = contentType({
   key: 'BannerDemoService',
   baseType: '_component',
-  displayName: 'Service',
+  displayName: 'Banner: Service',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     name: { type: 'string', displayName: 'Service Name', group: 'demo', isRequired: true, isLocalized: true },

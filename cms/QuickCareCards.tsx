@@ -12,7 +12,7 @@ import { expandReferences, previewContextOf } from './expandRefs';
 export const QuickCareCardContentType = contentType({
   key: 'BannerDemoQuickCareCard',
   baseType: '_component',
-  displayName: 'Quick Care Card',
+  displayName: 'Banner: Quick Care Card',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },
@@ -43,7 +43,7 @@ export const QuickCareCardContentType = contentType({
 export const QuickCareCardsContentType = contentType({
   key: 'BannerDemoQuickCareCards',
   baseType: '_component',
-  displayName: 'Quick Care Cards',
+  displayName: 'Banner: Quick Care Cards',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     cards: {

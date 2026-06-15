@@ -1,6 +1,7 @@
 import { getClient } from '@optimizely/cms-sdk';
 import { OptimizelyComponent, withAppContext } from '@optimizely/cms-sdk/react/server';
 import { notFound } from 'next/navigation';
+import { DEFAULT_LOCALE } from '@/lib/locales';
 
 type Props = {
   params: Promise<{ locale: string; slug?: string[] }>;
@@ -12,12 +13,26 @@ type Props = {
  * and the Graph path matches what the CMS indexed.
  */
 async function Page({ params }: Props) {
-  const { slug = [] } = await params;
+  const { locale, slug = [] } = await params;
   // The default-locale URL is indexed clean (no locale prefix) once a hostname is
-  // configured, e.g. "/vb-demo/". Locale is metadata, not part of url.default.
-  const path = slug.length ? `/${slug.join('/')}/` : '/';
+  // configured, e.g. "/vb-demo/". Non-default locales keep their route segment in
+  // `url.default` (e.g. "/fr/vb-demo/"), so fold it back into the Graph path.
+  const cleanPath = slug.length ? `/${slug.join('/')}/` : '/';
+  const isDefault = locale === DEFAULT_LOCALE;
+  const prefixedPath = `/${locale}${cleanPath}`;
+  const path = isDefault ? cleanPath : prefixedPath;
 
-  const content = await getClient().getContentByPath(path);
+  const client = getClient();
+  let content = await client.getContentByPath(path);
+
+  if (!content?.[0]) {
+    // Default locale: content under the site start page is indexed clean
+    // ("/vb-demo/"), but content elsewhere keeps the locale prefix
+    // ("/en/vb-demo/") — try the prefixed form before giving up.
+    // Non-default locale: fall back to the default-locale version when this page
+    // hasn't been translated/published yet (so it renders instead of 404ing).
+    content = await client.getContentByPath(isDefault ? prefixedPath : cleanPath);
+  }
   if (!content?.[0]) notFound();
 
   return <OptimizelyComponent content={content[0]} />;

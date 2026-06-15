@@ -8,7 +8,7 @@ import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 export const FacilityInfoContentType = contentType({
   key: 'BannerDemoFacilityInfo',
   baseType: '_component',
-  displayName: 'Facility Info',
+  displayName: 'Banner: Facility Info',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     image: {

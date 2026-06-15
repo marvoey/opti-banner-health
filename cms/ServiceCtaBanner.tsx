@@ -9,7 +9,7 @@ import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 export const ServiceCtaBannerContentType = contentType({
   key: 'BannerDemoServiceCtaBanner',
   baseType: '_component',
-  displayName: 'Service CTA Banner',
+  displayName: 'Banner: Service CTA Banner',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     heading: { type: 'string', displayName: 'Heading', group: 'demo', isLocalized: true },

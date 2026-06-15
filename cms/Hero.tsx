@@ -10,7 +10,7 @@ import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 export const HeroContentType = contentType({
   key: 'BannerDemoHero',
   baseType: '_component',
-  displayName: 'Hero Banner',
+  displayName: 'Banner: Hero Banner',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     kicker: { type: 'string', displayName: 'Kicker', group: 'demo', isLocalized: true },

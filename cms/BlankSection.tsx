@@ -15,7 +15,7 @@ import { DemoRow, DemoColumn } from './wrappers';
 export const BlankSectionDisplayTemplate = displayTemplate({
   key: 'BlankSectionDefault',
   isDefault: true,
-  displayName: 'Blank Section',
+  displayName: 'Banner: Blank Section',
   contentType: 'BlankSection',
   settings: {
     overlap: {

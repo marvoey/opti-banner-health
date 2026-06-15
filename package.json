@@ -4,14 +4,18 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3006",
+    "predev": "npm run gen:locales",
     "build": "next build",
+    "prebuild": "npm run gen:locales",
     "start": "next start",
     "lint": "eslint",
+    "gen:locales": "node --env-file=.env scripts/generate-locales.mjs",
     "config:push": "npx @optimizely/cms-cli config push optimizely.config.mjs"
   },
   "dependencies": {
     "@optimizely/cms-cli": "^2.0.0",
     "@optimizely/cms-sdk": "^2.0.0",
+    "@tailwindcss/typography": "^0.5.20",
     "lucide-react": "^1.18.0",
     "next": "16.2.9",
     "react": "19.2.4",

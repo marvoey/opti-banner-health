@@ -11,7 +11,7 @@ import { expandReferences, previewContextOf } from './expandRefs';
 export const ConditionContentType = contentType({
   key: 'BannerDemoCondition',
   baseType: '_component',
-  displayName: 'Condition',
+  displayName: 'Banner: Condition',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },
@@ -41,7 +41,7 @@ export const ConditionContentType = contentType({
 export const ConditionGridContentType = contentType({
   key: 'BannerDemoConditionGrid',
   baseType: '_component',
-  displayName: 'Condition Grid',
+  displayName: 'Banner: Condition Grid',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     heading: { type: 'string', displayName: 'Heading', group: 'demo', isLocalized: true },

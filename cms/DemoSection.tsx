@@ -13,7 +13,7 @@ import { DemoRow, DemoColumn } from './wrappers';
 export const DemoSectionContentType = contentType({
   key: 'DemoSection',
   baseType: '_section',
-  displayName: 'Demo Section',
+  displayName: 'Banner: Demo Section',
   properties: {},
 });
 
@@ -25,7 +25,7 @@ export const DemoSectionContentType = contentType({
 export const DemoSectionDisplayTemplate = displayTemplate({
   key: 'DemoSectionDefault',
   isDefault: true,
-  displayName: 'Demo Section',
+  displayName: 'Banner: Demo Section',
   contentType: 'DemoSection',
   settings: {
     background: {

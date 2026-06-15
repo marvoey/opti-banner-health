@@ -11,7 +11,7 @@ import { expandReferences, previewContextOf } from './expandRefs';
 export const DoctorContentType = contentType({
   key: 'BannerDemoDoctor',
   baseType: '_component',
-  displayName: 'Doctor',
+  displayName: 'Banner: Doctor',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     name: { type: 'string', displayName: 'Name', group: 'demo', isLocalized: true },
@@ -46,7 +46,7 @@ export const DoctorContentType = contentType({
 export const FeaturedDoctorsContentType = contentType({
   key: 'BannerDemoFeaturedDoctors',
   baseType: '_component',
-  displayName: 'Featured Doctors',
+  displayName: 'Banner: Featured Doctors',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     heading: { type: 'string', displayName: 'Heading', group: 'demo', isLocalized: true },

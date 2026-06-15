@@ -9,7 +9,7 @@ import { Heart } from 'lucide-react';
 export const TestimonialContentType = contentType({
   key: 'BannerDemoTestimonial',
   baseType: '_component',
-  displayName: 'Testimonial',
+  displayName: 'Banner: Testimonial',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     quote: { type: 'string', displayName: 'Quote', group: 'demo', isLocalized: true },

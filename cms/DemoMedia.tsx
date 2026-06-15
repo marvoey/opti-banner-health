@@ -5,7 +5,7 @@ import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 export const DemoMediaContentType = contentType({
   key: 'DemoMedia',
   baseType: '_component',
-  displayName: 'Demo Media',
+  displayName: 'Banner: Demo Media',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     image: {

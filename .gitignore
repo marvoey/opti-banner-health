@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated at build by scripts/generate-locales.mjs
+/lib/locales.generated.ts

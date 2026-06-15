@@ -10,7 +10,7 @@ import { MapPin, Phone, ChevronRight } from 'lucide-react';
 export const FacilityHeroContentType = contentType({
   key: 'BannerDemoFacilityHero',
   baseType: '_component',
-  displayName: 'Facility Hero',
+  displayName: 'Banner: Facility Hero',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     breadcrumb: {

@@ -11,7 +11,7 @@ import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 export const DemoTextContentType = contentType({
   key: 'DemoText',
   baseType: '_component',
-  displayName: 'Demo Text',
+  displayName: 'Banner: Demo Text',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     text: { type: 'richText', displayName: 'Text', group: 'demo', isLocalized: true },

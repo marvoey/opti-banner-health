@@ -11,7 +11,7 @@ import { expandReferences, previewContextOf } from './expandRefs';
 export const ServicesGridAutoContentType = contentType({
   key: 'BannerDemoServicesGridAuto',
   baseType: '_component',
-  displayName: 'Services Grid (Auto)',
+  displayName: 'Banner: Services Grid (Auto)',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },

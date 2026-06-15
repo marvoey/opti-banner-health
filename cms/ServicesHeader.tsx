@@ -10,7 +10,7 @@ import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 export const ServicesHeaderContentType = contentType({
   key: 'BannerDemoServicesHeader',
   baseType: '_component',
-  displayName: 'Services Header',
+  displayName: 'Banner: Services Header',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },

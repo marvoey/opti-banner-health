@@ -10,7 +10,7 @@ import { Search } from 'lucide-react';
 export const ServicesHeroContentType = contentType({
   key: 'BannerDemoServicesHero',
   baseType: '_component',
-  displayName: 'Services Hero',
+  displayName: 'Banner: Services Hero',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     headline: { type: 'string', displayName: 'Headline', group: 'demo', isLocalized: true },

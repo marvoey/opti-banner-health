@@ -51,18 +51,25 @@ export async function expandReferences<T = unknown>(
   const keys = (refs ?? []).map((r) => r?.key).filter((k): k is string => !!k);
   if (keys.length === 0) return [];
   const client = getClient();
-  // `{ key, locale }` (+ preview token) fetches the latest draft in that locale;
-  // `{ key }` alone fetches the latest published version (SDK priority rules).
+  const locale = ctx?.locale;
+  // In preview/edit mode, fetch the latest DRAFT (with the preview token) in the
+  // parent's locale. On the published site, `{ key, locale }` filters published
+  // content to that locale branch so translated blocks render on a localized page;
+  // `{ key }` alone is NOT locale-filtered (SDK priority rules).
   const usePreview = !!(ctx?.edit && ctx.previewToken);
-  const items = await Promise.all(
-    keys.map((key) =>
-      client
-        .getContent(
-          usePreview ? { key, locale: ctx!.locale } : { key },
-          usePreview ? { previewToken: ctx!.previewToken } : undefined,
-        )
-        .catch(() => null),
-    ),
-  );
+  const options = usePreview ? { previewToken: ctx!.previewToken } : undefined;
+
+  const fetchOne = async (key: string) => {
+    const item = await client.getContent({ key, locale }, options).catch(() => null);
+    // Fall back to the default-locale (or any published) branch when this block
+    // hasn't been translated yet — so a partially translated page still renders
+    // every block instead of dropping the untranslated ones.
+    if (!item && locale) {
+      return client.getContent({ key }, options).catch(() => null);
+    }
+    return item;
+  };
+
+  const items = await Promise.all(keys.map(fetchOne));
   return items.filter(Boolean) as T[];
 }

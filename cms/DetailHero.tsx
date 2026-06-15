@@ -11,7 +11,7 @@ import { Heart, ChevronRight } from 'lucide-react';
 export const DetailHeroContentType = contentType({
   key: 'BannerDemoDetailHero',
   baseType: '_component',
-  displayName: 'Detail Hero',
+  displayName: 'Banner: Detail Hero',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     breadcrumbParent: { type: 'string', displayName: 'Breadcrumb Parent', group: 'demo', isLocalized: true },

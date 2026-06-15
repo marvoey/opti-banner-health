@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { LOCALE_SEGMENTS } from '@/lib/locales';
 
 /**
  * Next.js 16 Proxy (the replacement for Middleware) — locale clean-URLs for the
@@ -18,7 +19,10 @@ import type { NextRequest } from 'next/server';
  */
 
 const DEFAULT_LOCALE = process.env.OPTIMIZELY_DEFAULT_LOCALE || 'en';
-const KNOWN_LOCALES = [DEFAULT_LOCALE];
+// Route segments of the non-default locales enabled in the CMS, sourced from
+// lib/locales.generated.ts (refreshed by `npm run gen:locales`). The default
+// locale serves clean URLs, so it has no segment here.
+const KNOWN_LOCALE_SEGMENTS = LOCALE_SEGMENTS;
 
 // Static mock pages that must keep rendering from app/ (not the CMS catch-all).
 // All static reference pages live under the single `/mock` prefix. Everything
@@ -50,7 +54,7 @@ export function proxy(request: NextRequest) {
   }
 
   // A non-default known locale is already present → leave it; [locale] is populated.
-  if (KNOWN_LOCALES.includes(seg)) {
+  if (KNOWN_LOCALE_SEGMENTS.includes(seg)) {
     return NextResponse.next();
   }
 

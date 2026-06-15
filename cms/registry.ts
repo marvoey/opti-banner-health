@@ -49,6 +49,7 @@ import FeaturedDoctors, {
   DoctorContentType,
   FeaturedDoctorsContentType,
 } from './FeaturedDoctors';
+import BlogPost, { BlogPostContentType } from './BlogPost';
 
 /**
  * Single configuration + registration point for the Optimizely SDK.
@@ -91,6 +92,7 @@ initContentTypeRegistry([
   FacilityInfoContentType,
   DoctorContentType,
   FeaturedDoctorsContentType,
+  BlogPostContentType,
 ]);
 
 initDisplayTemplateRegistry([
@@ -128,5 +130,6 @@ initReactComponentRegistry({
     BannerDemoFacilityInfo: FacilityInfo,
     BannerDemoDoctor: Doctor,
     BannerDemoFeaturedDoctors: FeaturedDoctors,
+    BannerDemoBlogPost: BlogPost,
   },
 });

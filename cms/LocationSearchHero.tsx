@@ -10,7 +10,7 @@ import { MapPin } from 'lucide-react';
 export const LocationSearchHeroContentType = contentType({
   key: 'BannerDemoLocationSearchHero',
   baseType: '_component',
-  displayName: 'Location Search Hero',
+  displayName: 'Banner: Location Search Hero',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     headline: { type: 'string', displayName: 'Headline', group: 'demo', isLocalized: true },

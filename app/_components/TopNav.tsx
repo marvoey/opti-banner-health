@@ -1,4 +1,5 @@
 import { Phone } from 'lucide-react';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const TopNav = () => (
   <div className="bg-slate-50 border-b border-slate-200 py-2 hidden md:block" data-cms-group="Navigation">
@@ -10,7 +11,7 @@ const TopNav = () => (
       </div>
       <div className="flex gap-4 items-center">
         <span className="flex items-center gap-1"><Phone size={14} className="text-blue-800" /> (800) 230-2273</span>
-        <a href="#" className="text-blue-800 hover:underline">Español</a>
+        <LanguageSwitcher />
       </div>
     </div>
   </div>

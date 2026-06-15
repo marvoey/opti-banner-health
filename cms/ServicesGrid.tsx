@@ -10,14 +10,14 @@ import type { StructureContainerProps } from '@optimizely/cms-sdk/react/server';
 export const ServicesGridContentType = contentType({
   key: 'BannerDemoServicesGrid',
   baseType: '_section',
-  displayName: 'Services Grid',
+  displayName: 'Banner: Services Grid',
   properties: {},
 });
 
 export const ServicesGridDisplayTemplate = displayTemplate({
   key: 'ServicesGridDefault',
   isDefault: true,
-  displayName: 'Services Grid',
+  displayName: 'Banner: Services Grid',
   contentType: 'BannerDemoServicesGrid',
   settings: {
     columns: {

@@ -13,7 +13,7 @@ const DEFAULT_MAP_IMAGE = 'https://images.unsplash.com/photo-1526778548025-fa2f4
 export const LocationContentType = contentType({
   key: 'BannerDemoLocation',
   baseType: '_component',
-  displayName: 'Location',
+  displayName: 'Banner: Location',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     name: { type: 'string', displayName: 'Name', group: 'demo', isLocalized: true },
@@ -32,7 +32,7 @@ export const LocationContentType = contentType({
 export const LocationResultsContentType = contentType({
   key: 'BannerDemoLocationResults',
   baseType: '_component',
-  displayName: 'Location Results',
+  displayName: 'Banner: Location Results',
   compositionBehaviors: ['elementEnabled'],
   properties: {
     locations: {
