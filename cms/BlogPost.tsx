@@ -1,20 +1,31 @@
 import { contentType, type ContentProps } from '@optimizely/cms-sdk';
 import { RichText } from '@optimizely/cms-sdk/react/richText';
-import { OptimizelyComposition, getPreviewUtils } from '@optimizely/cms-sdk/react/server';
-import { ComponentWrapper } from './wrappers';
+import { OptimizelyComponent, getPreviewUtils } from '@optimizely/cms-sdk/react/server';
+import { DemoTextContentType } from './DemoText';
+import { DemoMediaContentType } from './DemoMedia';
+import { DemoCardContentType } from './DemoCard';
+import { DemoCalloutContentType } from './DemoCallout';
+import { TestimonialContentType } from './Testimonial';
+import { ServiceCtaBannerContentType } from './ServiceCtaBanner';
+import { ServicesGridAutoContentType } from './ServicesGridAuto';
+import { ConditionGridContentType } from './ConditionGrid';
+import { FeaturedDoctorsContentType } from './FeaturedDoctors';
+import { QuickCareCardsContentType } from './QuickCareCards';
 
 /**
- * Blog Post — the translation-demo centerpiece. An `_experience` (so it routes to
- * its own URL) whose FLAT properties (category, title, author, body, …) are the
- * "easy" Opal translation target, plus the built-in dynamic composition area
- * where editors drop EXISTING library blocks (Featured Doctors, Conditions Grid,
- * etc.) to show scale. The flat fields and the referenced library blocks are each
- * translated as discrete Assets-panel items — the reliable localization workflow —
- * while the composition tree itself stays structural.
+ * Blog Post — the translation-demo centerpiece. A `_page` (a regular content page
+ * with its own URL — simpler and clearer than an Experience). Its FLAT properties
+ * (category, title, author, body, …) are the "easy" Opal translation target, and
+ * the `blocks` content area lets editors add EXISTING library blocks (Featured
+ * Doctors, Conditions Grid, Testimonial, …) below the article to show scale.
+ *
+ * `blocks` is a ContentArea (`array` of `content`) over concrete block types, so
+ * Graph fetches each block's full properties inline; we render them by resolving
+ * each block's type through the component registry with `OptimizelyComponent`.
  */
 export const BlogPostContentType = contentType({
   key: 'BannerDemoBlogPost',
-  baseType: '_experience',
+  baseType: '_page',
   displayName: 'Banner: Blog Post',
   properties: {
     category: {
@@ -44,6 +55,28 @@ export const BlogPostContentType = contentType({
     heroImageAlt: { type: 'string', displayName: 'Hero Image Alt Text', group: 'demo', isLocalized: true },
     excerpt: { type: 'string', displayName: 'Excerpt', group: 'demo', isLocalized: true },
     body: { type: 'richText', displayName: 'Body', group: 'demo', isLocalized: true },
+    blocks: {
+      type: 'array',
+      displayName: 'Blocks',
+      description: 'Add reusable content blocks below the article.',
+      group: 'demo',
+      isLocalized: true,
+      items: {
+        type: 'content',
+        allowedTypes: [
+          DemoTextContentType,
+          DemoMediaContentType,
+          DemoCardContentType,
+          DemoCalloutContentType,
+          TestimonialContentType,
+          ServiceCtaBannerContentType,
+          ServicesGridAutoContentType,
+          ConditionGridContentType,
+          FeaturedDoctorsContentType,
+          QuickCareCardsContentType,
+        ],
+      },
+    },
   },
 });
 
@@ -56,12 +89,14 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 type Props = { content: ContentProps<typeof BlogPostContentType> };
+type Block = { __typename: string };
 
 export default function BlogPost({ content }: Props) {
   const { pa } = getPreviewUtils(content);
   const categoryLabel = content.category ? CATEGORY_LABELS[content.category] ?? content.category : null;
   // Compact byline: "Author • Date • Read time" with only the parts that are set.
   const meta = [content.author, content.publishDate, content.readTime].filter(Boolean);
+  const blocks = (content.blocks ?? []) as Block[];
 
   return (
     <main>
@@ -135,12 +170,15 @@ export default function BlogPost({ content }: Props) {
         </div>
       </article>
 
-      {/* Reusable library blocks dropped onto the page (scale). Their content lives
-          in flat, individually-translatable assets. */}
-      <OptimizelyComposition
-        nodes={content.composition?.nodes ?? []}
-        ComponentWrapper={ComponentWrapper}
-      />
+      {/* Reusable library blocks added on the page (scale). Each block's type is
+          resolved through the component registry and rendered in place. */}
+      {blocks.length ? (
+        <div {...pa('blocks')}>
+          {blocks.map((block, i) => (
+            <OptimizelyComponent key={i} content={block} />
+          ))}
+        </div>
+      ) : null}
     </main>
   );
 }
