@@ -36,6 +36,12 @@ import ConditionGrid, {
   ConditionContentType,
   ConditionGridContentType,
 } from './ConditionGrid';
+import LocationSearchHero, { LocationSearchHeroContentType } from './LocationSearchHero';
+import LocationResults, {
+  Location,
+  LocationContentType,
+  LocationResultsContentType,
+} from './LocationResults';
 
 /**
  * Single configuration + registration point for the Optimizely SDK.
@@ -71,6 +77,9 @@ initContentTypeRegistry([
   DetailHeroContentType,
   ConditionContentType,
   ConditionGridContentType,
+  LocationSearchHeroContentType,
+  LocationContentType,
+  LocationResultsContentType,
 ]);
 
 initDisplayTemplateRegistry([
@@ -101,5 +110,8 @@ initReactComponentRegistry({
     BannerDemoDetailHero: DetailHero,
     BannerDemoCondition: Condition,
     BannerDemoConditionGrid: ConditionGrid,
+    BannerDemoLocationSearchHero: LocationSearchHero,
+    BannerDemoLocation: Location,
+    BannerDemoLocationResults: LocationResults,
   },
 });
