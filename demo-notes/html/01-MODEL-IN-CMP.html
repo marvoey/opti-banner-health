@@ -1,0 +1,117 @@
+<section class="content-body grid-75 "><div style="display: contents;"><div class="rm-Markdown markdown-body rm-Markdown markdown-body ng-non-bindable" data-testid="RDMD" style="margin-left: 31px;"><style data-tailwind-stylesheet="true"></style><p>The journey into Omnichannel Content (OCC) starts with <a target="_self" href="/content-marketing-platform/docs/get-started-with-omnichannel-content">content type</a>. Designing content types is similar to designing models for database object-relational mappings (ORMs) or View models in the context of model-view-controller (MVC).</p>
+<h2 class="heading heading-2 header-scroll"><div class="heading-anchor anchor waypoint" id="model-content-from-domain-space"></div><div class="heading-text">Model content from domain space</div><a aria-label="Skip link to Model content from domain space" class="heading-anchor-icon fa fa-regular fa-anchor" href="#model-content-from-domain-space"></a></h2>
+<p>When you design models for ORM, you must understand the problem's data requirements before designing the content types. Little consideration is given to how the data is rendered, decoupling it from its presentation. This approach is most common and effective when the problem space is well-explored and has a data schema that is largely agreed upon, such as a schema for ecommerce products, a schema for a blog, a schema for a podcast, and so on.</p>
+<h2 class="heading heading-2 header-scroll"><div class="heading-anchor anchor waypoint" id="model-content-from-design"></div><div class="heading-text">Model content from design</div><a aria-label="Skip link to Model content from design" class="heading-anchor-icon fa fa-regular fa-anchor" href="#model-content-from-design"></a></h2>
+<p>You can derive a content model from the design of how a component is rendered or presented. You may take this approach in the following ways:</p>
+<ul>
+<li><strong>Existing situations</strong> – You may work with content tied to an existing website or application. In this case, designs are available first, and you must build backward.</li>
+<li><strong>Iterative feedback loops</strong> – Designs and content models often iteratively influence each other. Starting with an existing design can act as a launching point or inspiration for model development</li>
+<li><strong>Visual-heavy content</strong> – In fields such as marketing or UI-centric products, the appearance may take precedence, requiring you to create models that can support design needs.</li>
+</ul>
+<h3 class="heading heading-3 header-scroll"><div class="heading-anchor anchor waypoint" id="existing-design-considerations"></div><div class="heading-text">Existing design considerations</div><a aria-label="Skip link to Existing design considerations" class="heading-anchor-icon fa fa-regular fa-anchor" href="#existing-design-considerations"></a></h3>
+<p>Consider the following approaches for existing designs.</p>
+<ol>
+<li><strong>Deconstruct designs</strong>
+<ul>
+<li><strong>Break it down</strong> – Analyze each design element. Is it text, image, video, or a user input field? Treat these as potential building blocks.</li>
+<li><strong>Identify variations</strong> – Look for distinct patterns in how content is laid out or typeset. These may map to content model variations.</li>
+<li><strong>Note implicit data</strong> – Does the design hint at attributes not explicitly visible? For example, an event listing implies location and date data.</li>
+</ul>
+</li>
+<li><strong>Map content properties</strong>
+<ul>
+<li><strong>Match elements to fields</strong> – Assign appropriate field types to the elements you identified, such as text areas, image fields, dropdowns, and so on.</li>
+<li><strong>Do not force the fit</strong> – For complex design components, create custom content types and their sub-fields rather than trying to cram everything into predefined options.</li>
+<li><strong>Mind your metadata</strong> – Consider fields needed for publication management (author, date), internal organization (tags, categories), and search optimization (SEO-specific fields).</li>
+</ul>
+</li>
+<li><strong>Consider relationships</strong>
+<ul>
+<li><strong>How do parts relate?</strong> – Analyze how designs link or potentially should link together. Do recipes link to ingredients? Do categories group products?</li>
+<li><strong>Hierarchical or linked?</strong> – Design organization gives clues about the relationships you need to create in your model.</li>
+</ul>
+</li>
+<li><strong>Future-proof for flexibility</strong>
+<ul>
+<li><strong>Beyond the immediate design</strong> – Anticipate how your content could be repurposed. Add fields or optional components to enable future use cases.</li>
+<li><strong>Modularity</strong> – If a layout has a repeating pattern, make that a reusable content component instead of hard-coding it into a single content type.</li>
+</ul>
+</li>
+</ol>
+<h3 class="heading heading-3 header-scroll"><div class="heading-anchor anchor waypoint" id="new-design-considerations"></div><div class="heading-text">New design considerations</div><a aria-label="Skip link to New design considerations" class="heading-anchor-icon fa fa-regular fa-anchor" href="#new-design-considerations"></a></h3>
+<p>When integrating content models with new designs, organizations typically choose a design system or component library. These resources ensure consistency, enhance efficiency through reusability, and enable faster and more dynamic design evolution by centralizing the changes.</p>
+<p>Consider the following approaches for new designs.</p>
+<ol>
+<li><strong>Analyze your design system</strong>
+<ul>
+<li><strong>Component inventory</strong> – List your available design components (atoms, molecules, organisms). Note their variations and possible states (active, disabled, and so on).</li>
+<li><strong>Map data inputs</strong> – For each component, identify what content is required (headline, image, call to action text, and so on).</li>
+<li><strong>Identify relationships</strong> – Explore any implied relationships between components within the design system, such as items belonging to a carousel.</li>
+</ul>
+</li>
+<li><strong>Connect components to content types</strong>
+<ul>
+<li><strong>Granularity</strong> – Assess if design components map directly to individual content types or become fields within larger content types.</li>
+<li><strong>Simple components, simple fields</strong> – Basic text blocks likely become standard text fields.</li>
+<li><strong>Nesting levels</strong> – Complex components or layouts may warrant a hierarchy of custom content types to mirror their composition.</li>
+</ul>
+</li>
+<li><strong>Refine models with system context</strong>
+<ul>
+<li><strong>Component variations</strong> – Ensure your model can handle variants defined in the design system (button types, image aspect ratios, and so on).</li>
+<li><strong>System constraints</strong> – Respect restrictions in the design system and translate them to content validations, such as an allowed number of items in a carousel.</li>
+</ul>
+</li>
+<li><strong>Expand beyond the visual</strong>
+<ul>
+<li><strong>Metadata</strong> – Add administrative and SEO metadata fields necessary for content governance.</li>
+<li><strong>System properties</strong> – Check for existing metadata elements in your design system. Map those to your model; for example, UI-specific tags to control component variations.</li>
+</ul>
+</li>
+<li><strong>Anticipate reuse and flexibility</strong>
+<ul>
+<li><strong>Cross-component potential</strong> – Spot where you can use the same content element in different system parts. Design once, reuse many times.</li>
+<li><strong>Growth potential</strong> – Do not strictly lock yourself into the current design system. Make the model adaptable to future additions.</li>
+</ul>
+</li>
+</ol>
+<h2 class="heading heading-2 header-scroll"><div class="heading-anchor anchor waypoint" id="model-content-with-a-hybrid-approach"></div><div class="heading-text">Model content with a hybrid approach</div><a aria-label="Skip link to Model content with a hybrid approach" class="heading-anchor-icon fa fa-regular fa-anchor" href="#model-content-with-a-hybrid-approach"></a></h2>
+<p>When designing a content model, you may be in situations where you cannot decouple pure content from the rendered version of that content. So, in such situations, take a hybrid approach. Consider the following:</p>
+<ul>
+<li>Try to decouple content from design.</li>
+<li>If you incorporate design elements, try to keep them channel-agnostic.</li>
+<li>Instead of combining channel and content information in the same content type, have Pure Content as an independent content type and create a channel-specific content type that has a composition with the Pure Content.</li>
+</ul>
+<h2 class="heading heading-2 header-scroll"><div class="heading-anchor anchor waypoint" id="leverage-source-and-source-metadata"></div><div class="heading-text">Leverage source and source metadata</div><a aria-label="Skip link to Leverage source and source metadata" class="heading-anchor-icon fa fa-regular fa-anchor" href="#leverage-source-and-source-metadata"></a></h2>
+<p>Additional metadata fields are available when you create a content type with the API:</p>
+<ul>
+<li>Content type level
+<ul>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Source</span></code> – A name from which system this content type is derived.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Source ID</span></code> – ID of the content type at its source.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Source Metadata</span></code> – Additional metadata to store that is only readable by API consumers does not have to be understandable to CMP.</li>
+</ul>
+</li>
+<li>Field level
+<ul>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Source ID</span></code> – the ID of the field in the source system.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Source Metadata</span></code> – Additional metadata to store that is only readable by API consumers does not have to be understandable to CMP.</li>
+</ul>
+</li>
+</ul>
+<p>For example, if you want to import a content type from some other headless CMS:</p>
+<ul>
+<li>Content type level
+<ul>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Source</span></code> – Name of the external system.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Source ID</span></code> – ID of the content type on that system.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Source Metadata</span></code> – likely nothing.</li>
+</ul>
+</li>
+<li>Field level
+<ul>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Source ID</span></code> – Key of the field in the downstream system.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Source Metadata</span></code> – Metadata around what field this was created from; for example, the field type in the downstream system it was created from to use when doing a reverse conversion.</li>
+</ul>
+</li>
+</ul></div></div><hr class="NextStepsDivider"></section>

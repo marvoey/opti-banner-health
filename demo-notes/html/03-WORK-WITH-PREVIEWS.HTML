@@ -1,0 +1,68 @@
+<section class="content-body grid-75 "><div style="display: contents;"><div class="rm-Markdown markdown-body rm-Markdown markdown-body ng-non-bindable" data-testid="RDMD" style="margin-left: 31px;"><style data-tailwind-stylesheet="true"></style><p>While OCC facilitates the separation of content from its rendering, certain scenarios necessitate simultaneous viewing of the rendered content with creating content. The OCC preview is entirely API-driven, as illustrated in the following flowchart.<br>
+<span aria-label="Expand image" class="img lightbox closed" role="button" tabindex="0"><span class="lightbox-inner"><img alt="" class="img  " height="auto" loading="lazy" src="https://files.readme.io/6ec2d22-OCCPreviewFlow.png" title="" width="auto"></span></span></p>
+<p>The protocol has the following steps:</p>
+<ol>
+<li>Preview request <a target="_self" href="https://docs.developers.optimizely.com/content-marketing-platform/reference/task-events#content_preview_requested">webhook</a> delivery or consumption.<br>
+Preview generators should check the content type requesting to preview to be certain that it is one it can handle. When acknowledging a preview request, you need a <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">content_hash</span></code> in the preview payload at the JSON path:
+<div class="CodeTabs CodeTabs_initial theme-light"><div class="CodeTabs-toolbar"><button type="button" value="json">JSON</button></div><div class="CodeTabs-inner"><pre><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-json theme-light" data-lang="json"><div class="cm-s-neo" data-testid="SyntaxHighlighter"><span class="cm-variable">$</span>.<span class="cm-property">data</span>.<span class="cm-property">assets</span>.<span class="cm-property">structured_contents</span>[<span class="cm-variable">_index_</span>].<span class="cm-property">content_body</span>.<span class="cm-property">fields_version</span>.<span class="cm-property">content_hash</span></div></code></pre></div></div>
+<button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Content_hash</span></code> is a digest signature of the content's version. The acknowledgment with this signature will let CMP determine whether the preview is outdated.</li>
+<li><a target="_self" href="https://docs.developers.optimizely.com/content-marketing-platform/reference/post_structured-content-contents-content-id-versions-version-id-previews-preview-id-acknowledge">Acknowledge preview</a> being generated.<br>
+Acknowledgment is necessary because CMP lacks knowledge of whether any system can generate the preview when a content preview is requested. There may be content types that never generate a preview. Therefore, when CMP identifies a system capable of generating the preview, the acknowledgment confirms its availability. Optimizely anticipates that only one system will acknowledge a single piece of content. Consequently, after receiving the initial acknowledgment, any subsequent acknowledgments will result in errors from the CMP API.</li>
+<li><a target="_self" href="https://docs.developers.optimizely.com/content-marketing-platform/reference/post_structured-content-contents-content-id-versions-version-id-previews-preview-id-complete">Complete preview generation</a> by submitting the links to the preview.<br>
+The completed endpoint expects a dictionary in <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">keyed_previews</span></code>. The generator can provide multiple previews. The key can be anything, but it is what displays in the drop-down list of previews. Some interesting capabilities with the key could be multiple languages, personalized versions of the content, rendering from across multiple channels, or any combination of these. A single preview request can aggregate different previews of the content in consideration.<br>
+The URL needs to point to an HTML file. If the URL is behind authentication, you should use JSON Web Token (JWT)-based authentication to include the token in the URL provided in the completion. CMP caches the URL for an indefinite period, so CMP will not access the URL beyond the initial access.</li>
+</ol>
+<h2 class="heading heading-2 header-scroll"><div class="heading-anchor anchor waypoint" id="render-preview-with-push-strategies"></div><div class="heading-text">Render preview with push strategies</div><a aria-label="Skip link to Render preview with push strategies" class="heading-anchor-icon fa fa-regular fa-anchor" href="#render-preview-with-push-strategies"></a></h2>
+<p>The following push strategies render a preview for a CMS (single preview):</p>
+<ul>
+<li>Acknowledge the preview request after checking that you can handle the content type in the payload.</li>
+<li>Take the preview requested payload and create draft content for the CMS.</li>
+<li>Copy the assets used in the content and refer to them internally if needed. The CMP DAM's CDN (for original versions and renditions) can also serve them.</li>
+<li>Generate a preview URL for the draft content and append the necessary authentication tokens.</li>
+<li>Make the completed request.</li>
+<li>Wait 15 minutes, and then consider cleaning the draft content because the preview is cached on CMP.</li>
+</ul>
+<h2 class="heading heading-2 header-scroll"><div class="heading-anchor anchor waypoint" id="render-preview-with-pull-strategies"></div><div class="heading-text">Render preview with pull strategies</div><a aria-label="Skip link to Render preview with pull strategies" class="heading-anchor-icon fa fa-regular fa-anchor" href="#render-preview-with-pull-strategies"></a></h2>
+<p>In a pull implementation, the renderer fetches data at runtime, so integration middleware does not need to create draft content per se. Rather, given the content payload, you must predictably generate the preview URL, wait for the content to be available as a draft in Optimizely Graph, and then make the completed API call with the URL.</p>
+<blockquote class="callout callout_info" theme="📘"><span class="callout-icon">📘</span><h3 class="heading heading-3 header-scroll"><div class="heading-anchor anchor waypoint" id="note"></div><div class="heading-text">Note</div><a aria-label="Skip link to Note" class="heading-anchor-icon fa fa-regular fa-anchor" href="#note"></a></h3><p>Use HMAC authentication for retrieving draft contents from Optimizely Graph.</p><p>Also, if you want to query details about the assets related to the OCC in pull manner, use Optimizely Graph integration for publicly accessible assets. Contact your Customer Support Manager (CSM) or Application Engineer (AE) to enable the integration.</p></blockquote>
+<p>The following TypeScript code shows how to make an Optimizely Graph API call with HMAC authentication:</p>
+<div class="CodeTabs CodeTabs_initial theme-light"><div class="CodeTabs-toolbar"><button type="button" value="typescript">TypeScript</button></div><div class="CodeTabs-inner"><pre><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-typescript theme-light" data-lang="typescript"><div class="cm-s-neo" data-testid="SyntaxHighlighter"><span class="cm-keyword">const</span> <span class="cm-def">contentGraphEndpoint</span> <span class="cm-operator">=</span> <span class="cm-string">"https://cg.optimizely.com"</span>;
+<span class="cm-keyword">const</span> <span class="cm-def">hmac</span>: <span class="cm-type">HmacCredentials</span> <span class="cm-operator">=</span> {
+  <span class="cm-property">key</span>: <span class="cm-string">"&lt;hmac_key&gt;"</span>,
+  <span class="cm-property">secret</span>: <span class="cm-string">"&lt;hmac_secret&gt;"</span>,
+};
+
+<span class="cm-keyword">function</span> <span class="cm-def">getContentGraphHmacAuthHeader</span>(
+  <span class="cm-def">method</span>: <span class="cm-type">string</span>,
+  <span class="cm-def">uri</span>: <span class="cm-type">string</span>,
+  <span class="cm-def">body</span>: <span class="cm-type">string</span>
+): <span class="cm-type">string</span> {
+  <span class="cm-keyword">const</span> <span class="cm-def">bodyBase64</span> <span class="cm-operator">=</span> <span class="cm-variable">CryptoJS</span>.<span class="cm-property">MD5</span>(<span class="cm-variable-2">body</span>).<span class="cm-property">toString</span>(<span class="cm-variable">CryptoJS</span>.<span class="cm-property">enc</span>.<span class="cm-property">Base64</span>);
+  <span class="cm-keyword">const</span> <span class="cm-def">key</span> <span class="cm-operator">=</span> <span class="cm-variable">hmac</span>.<span class="cm-property">key</span>;
+  <span class="cm-keyword">const</span> <span class="cm-def">secret</span> <span class="cm-operator">=</span> <span class="cm-variable">CryptoJS</span>.<span class="cm-property">enc</span>.<span class="cm-property">Base64</span>.<span class="cm-property">parse</span>(<span class="cm-variable">hmac</span>.<span class="cm-property">secret</span>);
+  <span class="cm-keyword">const</span> <span class="cm-def">timestamp</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">Date</span>().<span class="cm-property">getTime</span>();
+  <span class="cm-keyword">const</span> <span class="cm-def">nonce</span> <span class="cm-operator">=</span> <span class="cm-variable">Math</span>.<span class="cm-property">random</span>().<span class="cm-property">toString</span>(<span class="cm-number">36</span>).<span class="cm-property">substring</span>(<span class="cm-number">7</span>);
+  <span class="cm-keyword">const</span> <span class="cm-def">hmacSha</span> <span class="cm-operator">=</span> <span class="cm-variable">CryptoJS</span>.<span class="cm-property">HmacSHA256</span>(
+    [<span class="cm-variable-2">key</span>, <span class="cm-variable-2">method</span>, <span class="cm-variable-2">uri</span>, <span class="cm-variable-2">timestamp</span>, <span class="cm-variable-2">nonce</span>, <span class="cm-variable-2">bodyBase64</span>].<span class="cm-property">join</span>(<span class="cm-string">""</span>),
+    <span class="cm-variable-2">secret</span>
+  );
+  <span class="cm-keyword">const</span> <span class="cm-def">base64hmac</span> <span class="cm-operator">=</span> <span class="cm-variable">CryptoJS</span>.<span class="cm-property">enc</span>.<span class="cm-property">Base64</span>.<span class="cm-property">stringify</span>(<span class="cm-variable-2">hmacSha</span>);
+  <span class="cm-keyword">return</span> <span class="cm-string-2">`epi-hmac ${</span><span class="cm-variable-2">key</span><span class="cm-string-2">}:${</span><span class="cm-variable-2">timestamp</span><span class="cm-string-2">}:${</span><span class="cm-variable-2">nonce</span><span class="cm-string-2">}:${</span><span class="cm-variable-2">base64hmac</span><span class="cm-string-2">}`</span>;
+}
+
+<span class="cm-keyword">async</span> <span class="cm-keyword">function</span> <span class="cm-def">query</span>(<span class="cm-def">query</span>: <span class="cm-type">string</span>) {
+  <span class="cm-keyword">const</span> <span class="cm-def">method</span> <span class="cm-operator">=</span> <span class="cm-string">"POST"</span>;
+  <span class="cm-keyword">const</span> <span class="cm-def">body</span> <span class="cm-operator">=</span> <span class="cm-variable">JSON</span>.<span class="cm-property">stringify</span>({ <span class="cm-property">query</span> });
+  <span class="cm-keyword">const</span> <span class="cm-def">uri</span> <span class="cm-operator">=</span> <span class="cm-string">"/content/v2"</span>;
+
+  <span class="cm-keyword">const</span> <span class="cm-def">res</span> <span class="cm-operator">=</span> <span class="cm-keyword">await</span> <span class="cm-variable">fetch</span>(<span class="cm-string-2">`${</span><span class="cm-variable">contentGraphEndpoint</span><span class="cm-string-2">}/${</span><span class="cm-variable-2">uri</span><span class="cm-string-2">}`</span>, {
+    <span class="cm-property">method</span>,
+    <span class="cm-property">body</span>,
+    <span class="cm-property">headers</span>: {
+      <span class="cm-string cm-property">"Content-Type"</span>: <span class="cm-string">"application/json"</span>,
+      <span class="cm-property">Authorization</span>: <span class="cm-variable">getContentGraphHmacAuthHeader</span>(<span class="cm-variable-2">method</span>, <span class="cm-variable-2">uri</span>, <span class="cm-variable-2">body</span>),
+    },
+  });
+
+  <span class="cm-keyword">return</span> <span class="cm-keyword">await</span> <span class="cm-variable-2">res</span>.<span class="cm-property">json</span>();
+}</div></code></pre></div></div></div></div><hr class="NextStepsDivider"></section>

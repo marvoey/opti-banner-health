@@ -1,0 +1,184 @@
+<section class="content-body grid-75 "><div style="display: contents;"><div class="rm-Markdown markdown-body rm-Markdown markdown-body ng-non-bindable" data-testid="RDMD" style="margin-left: 31px;"><style data-tailwind-stylesheet="true"></style><p>Remote fields let you create your applications and include them as fields for users to interact in the editor. You can give administrators configuration options to adjust when a remote field is used at the content type level. This lets an administrator use the app across all content types while establishing specific settings for its usage within particular content types. For instance, consider a remote field that offers the functionality of a color picker. Whenever an administrator adds the color picker field to a content type, they can define additional configurations, such as the default color or the available shades that users can choose from when authoring content with that content type.</p>
+<p>Remote fields are mounted within the OCC editor as an iframe and communicate through the browser's native <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">postMessage</span></code> method. You must handle your field's edit and view states and define configuration options and validation rules for users' values.</p>
+<p>Remote fields use the Service Provider's Interface (<a target="_blank" href="https://docs.oracle.com/javase/tutorial/sound/SPI-intro.html" rel="noopener noreferrer">SPI</a>) approach—a type of application programming interface (API) designed specifically to let third-party developers extend the functionality of an existing software framework or system—over HTTP to enable implementors to adhere to a specific interface to achieve the goal stated earlier.</p>
+<p>Omnichannel content (OCC) lets you create and distribute content across channels in their respective ecosystems. For OCC conceptual types, see <a target="_self" href="">Get started with omnichannel content</a>.</p>
+<h2 class="heading heading-2 header-scroll"><div class="heading-anchor anchor waypoint" id="interface-endpoints"></div><div class="heading-text">Interface endpoints</div><a aria-label="Skip link to Interface endpoints" class="heading-anchor-icon fa fa-regular fa-anchor" href="#interface-endpoints"></a></h2>
+<p>Remote fields use the following endpoints:</p>
+<ul>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">GET /_status</span></code> – Health-checking endpoint. Must return HTTP 200 to indicate the remote field is ready.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">GET /component/edit</span></code> – Return an editor component (the HTML+ other assets) that can be mounted inside the host content editor when the user needs to interact with your remote field.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">GET /component/view</span></code> – Return a viewer component (the HTML + other assets) to view the content created in the editor when in the default state or after a user has selected it.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">POST /api/validate</span></code>  – Validate user input using this endpoint. The host will call it with the field value as the payload. The endpoint should return HTTP 200 if the payload is a valid field value; otherwise, it should throw HTTP 422.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">GET /api/config/schema</span></code> – Return a schema for the configuration options you set within the remote field. You should provide configuration settings for your remote field that administrators can use, when applying to a content type or component. The options give the administrator greater control over the function of the field on a per-content type basis. For example, a color picker field could have pre-selected options such as available shades. See the <strong>Add Configurations</strong> section below.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">POST /api/config/validate</span></code>  – Validate user input of the configuration settings. The host will call this with the field value as the payload. The endpoint should return HTTP 200 if the payload is a valid field value; otherwise, it should throw HTTP 422.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">GET /api/***</span></code> (Optional) – You can include custom API endpoints for the viewer or editor for your remote field. The generator can also make external API requests but restricts them to only allow-listed domains. If you want to use this capability, contact your Optimizely representative.</li>
+</ul>
+<h2 class="heading heading-2 header-scroll"><div class="heading-anchor anchor waypoint" id="editor-component"></div><div class="heading-text">Editor component</div><a aria-label="Skip link to Editor component" class="heading-anchor-icon fa fa-regular fa-anchor" href="#editor-component"></a></h2>
+<p>The component generator returns a component that acts as the field editor. This editor component is mounted on the page as an&nbsp;iframe and communicates with the content editor through the browser's native <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">postMessage</span></code> method.</p>
+<p>The supported messages are listed below:</p>
+<ul>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">receiveMessage("connected")</span></code> – Host is ready to send or receive messages (triggered after the component is ready).</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">receiveMessage("field-value")</span></code> – Receive the current value of the field.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">receiveMessage("field-config")</span></code> – Receive the current config of the field.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">receiveMessage("mode")</span></code> – Receive the current state of the editor (view or edit).</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">postMessage("connect")</span></code> – Component is ready to send or receive messages and initiate the connection to the host. The component needs to let the Host know it is ready to process data from the Host because the Host has no alternative way to be informed.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">postMessage("get:field-value")</span></code> – Requests the host to send the current field value.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">postMessage("set:field-value")</span></code> – Updates the value of the field. If the component is currently in view mode, the host will ignore the <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">set:field-value</span></code> call.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">postMessage("get:field-config")</span></code> – Requests the host to send the current <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">field-config</span></code>.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">postMessage("set:field-config")</span></code> – Updates the value of the <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">field-config</span></code>.</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">postMessage("get:mode")</span></code> – Requests the host to send the current editor state (view or edit).</li>
+<li><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">postMessage("set:mode")</span></code> – Changes the editor state (view or edit).</li>
+</ul>
+<p>In addition to handling these messages, the component can implement its state using any approved library, such as React, Angular, Vue, and so on.</p>
+<p>For HTTP API calls, the component must call the generator through which it was generated. Any HTTP calls to any other external or internal domain are restricted.</p>
+<p>In the example of the color picker, typical interaction steps with the host are:</p>
+<ol>
+<li>The remote field should send the connect event (this event is behind the <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">useHostChannel.ts</span></code> hook).</li>
+<li>The host is sent a connected message. At this moment, both sides are ready, and the remote field can ask for data.</li>
+<li>The remote field should ask for <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">field-config</span></code> and <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">field-value</span></code> at this point.</li>
+<li>The host returns those, and the editor can use the configs and values and render itself accordingly.</li>
+<li>The user can now interact with the remote field. When the remote field wants to update the field values, it can call <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">set:field-value</span></code> with the value as shown in <a target="_blank" href="https://github.com/newscred/color-picker-editor/blob/9169a28f4d9ee076ab7555203968c0d28477bda2/pages/component/edit.tsx#L61-L64" rel="noopener noreferrer">here</a>.</li>
+<li>If remote fields decide to change their mode at any point from view or edit, it can call <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">set:mode</span></code> with the desired mode value as shown in <a target="_blank" href="https://github.com/newscred/color-picker-editor/blob/9169a28f4d9ee076ab7555203968c0d28477bda2/pages/component/edit.tsx#L65" rel="noopener noreferrer">here</a>.</li>
+</ol>
+<blockquote class="callout callout_info" theme="📘"><span class="callout-icon">📘</span><h3 class="heading heading-3 header-scroll"><div class="heading-anchor anchor waypoint" id="note"></div><div class="heading-text">Note</div><a aria-label="Skip link to Note" class="heading-anchor-icon fa fa-regular fa-anchor" href="#note"></a></h3><p>The <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">field-config</span></code>&nbsp;and&nbsp;<button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">field-value</span></code>&nbsp;fields are not guaranteed to be returned in the same order as they were asked. Therefore you should not have your remote field depend on the order.</p></blockquote>
+<h2 class="heading heading-2 header-scroll"><div class="heading-anchor anchor waypoint" id="deployment-support"></div><div class="heading-text">Deployment support</div><a aria-label="Skip link to Deployment support" class="heading-anchor-icon fa fa-regular fa-anchor" href="#deployment-support"></a></h2>
+<p>Your editor component code must follow the following rules to make the deployment successful:</p>
+<ul>
+<li>The repository root must have the docker file named <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Dockerfile.production</span></code>.</li>
+<li>The docker file must <strong>not</strong> use any <em>private base image</em>.</li>
+<li>The container must serve requests from <strong>port 8000</strong>.</li>
+</ul>
+<blockquote class="callout callout_info" theme="📘"><span class="callout-icon">📘</span><h3 class="heading heading-3 header-scroll"><div class="heading-anchor anchor waypoint" id="note-1"></div><div class="heading-text">Note</div><a aria-label="Skip link to Note" class="heading-anchor-icon fa fa-regular fa-anchor" href="#note-1"></a></h3><p>The deployment will run on multiple pods.</p></blockquote>
+<h2 class="heading heading-2 header-scroll"><div class="heading-anchor anchor waypoint" id="add-configurations"></div><div class="heading-text">Add configurations</div><a aria-label="Skip link to Add configurations" class="heading-anchor-icon fa fa-regular fa-anchor" href="#add-configurations"></a></h2>
+<p>You should provide configuration settings for your remote field that administrators can use when applying to a content type or component. Providing settings gives the administrator greater control over the function of the field on a per per-contente basis. For example, a color picker field could have pre-selected options such as available shades.</p>
+<p>When configuring the remote field when adding it to the content type, the component generator can provide a JSON output that will guide the UI rendered in the cmp for configurations. Current support for input fields is limited to <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">text</span></code> and <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">dropdown</span></code> fields.</p>
+<p>The format for the settings API of an editor should be:</p>
+<div class="CodeTabs CodeTabs_initial theme-light"><div class="CodeTabs-toolbar"><button type="button" value="json">JSON</button></div><div class="CodeTabs-inner"><pre><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-json theme-light" data-lang="json"><div class="cm-s-neo" data-testid="SyntaxHighlighter">{
+    <span class="cm-property">"textFieldKey"</span>: {
+        <span class="cm-property">"type"</span>: <span class="cm-string">"text"</span>,
+        <span class="cm-property">"label"</span>: <span class="cm-string">"Label of the field"</span>,
+        <span class="cm-property">"required"</span>: <span class="cm-atom">false</span>,
+        <span class="cm-property">"default"</span>: <span class="cm-string">"A default value for the field"</span>,
+        <span class="cm-property">"maxLength"</span>: <span class="cm-number">30</span>
+    },
+    <span class="cm-property">"dropdownFieldKey"</span>: {
+        <span class="cm-property">"type"</span>: <span class="cm-string">"dropdown"</span>,
+        <span class="cm-property">"label"</span>: <span class="cm-string">"label of the drop down"</span>,
+        <span class="cm-property">"required"</span>: <span class="cm-atom">true</span>,
+        <span class="cm-property">"default"</span>: <span class="cm-string">"A default value"</span>,
+        <span class="cm-property">"options"</span>: [
+            {
+                <span class="cm-property">"label"</span>: <span class="cm-string">"An option"</span>,
+                <span class="cm-property">"value"</span>: <span class="cm-string">"A default value"</span>
+            },
+            {
+                <span class="cm-property">"label"</span>: <span class="cm-string">"Another option"</span>,
+                <span class="cm-property">"value"</span>: <span class="cm-string">"A value"</span>
+            }
+        ]
+    }
+}</div></code></pre></div></div>
+<p>As an example, when you render the settings fields from above, if a user writes <em>Text Field 1</em> into the <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">textFieldKey</span></code> and chooses an option with the value of option 2 for the <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">dropdownFieldKey</span></code>, the saved configuration displays as:</p>
+<div class="CodeTabs CodeTabs_initial theme-light"><div class="CodeTabs-toolbar"><button type="button" value="json">JSON</button></div><div class="CodeTabs-inner"><pre><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-json theme-light" data-lang="json"><div class="cm-s-neo" data-testid="SyntaxHighlighter">{
+    <span class="cm-property">"textFieldKey"</span>: <span class="cm-string">"Some lorem ipsum"</span>,
+    <span class="cm-property">"dropdownFieldKey"</span>: <span class="cm-string">"A value"</span>
+}  </div></code></pre></div></div>
+<p>This value is sent to the component when the component calls <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">get:field-config</span></code> to the host.</p>
+<h2 class="heading heading-2 header-scroll"><div class="heading-anchor anchor waypoint" id="test-your-remote-fields-locally"></div><div class="heading-text">Test your remote fields locally</div><a aria-label="Skip link to Test your remote fields locally" class="heading-anchor-icon fa fa-regular fa-anchor" href="#test-your-remote-fields-locally"></a></h2>
+<p>To streamline the development process, you can test your code locally with the Optimizely sandbox (<a target="_blank" href="https://sandbox.editor-component.cmp.optimizely.com/" rel="noopener noreferrer">https://sandbox.editor-component.cmp.optimizely.com/</a>) to check whether your remote field works as expected.</p>
+<span aria-label="Expand image" class="img lightbox closed" role="button" tabindex="0"><span class="lightbox-inner"><img alt="" class="img img-align-center " height="auto" loading="lazy" src="https://files.readme.io/c71293e-RF_Sandbox_Empty.png" title="" width="auto"></span></span>
+<p>For example, if you have a remote field running in <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">http://localhost:3006</span></code> and you want to test it, you can paste the URL <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">http://localhost:3006</span></code> in the URL field above (the remote field's root URL), click <strong>Update</strong>.</p>
+<p>You will see your remote field view component loading on the right side of the page. By default, if you keep the <strong>Value</strong> and <strong>Config</strong> fields empty, the remote field loads in an empty state.</p>
+<p>If you need to see how the component loads given a <strong>Value</strong> or <strong>Config</strong>, you can provide a <strong>Config</strong> or <strong>Value</strong> in the JSON format and click <strong>Update</strong> again.</p>
+<p>For example, providing <strong>Config</strong> for the color picker:</p>
+<div class="CodeTabs CodeTabs_initial theme-light"><div class="CodeTabs-toolbar"><button type="button" value="json">JSON</button></div><div class="CodeTabs-inner"><pre><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-json theme-light" data-lang="json"><div class="cm-s-neo" data-testid="SyntaxHighlighter">{<span class="cm-property">"shade"</span>:&nbsp;<span class="cm-string">"red"</span>}</div></code></pre></div></div>
+<p>The color picker will use this <strong>Config</strong>and load as shown below:</p>
+<span aria-label="Expand image" class="img lightbox closed" role="button" tabindex="0"><span class="lightbox-inner"><img alt="" class="img img-align-center " height="auto" loading="lazy" src="https://files.readme.io/91e176c-RF_Sandbox_ColourPicker.png" title="" width="auto"></span></span>
+<p>Similarly, you can also provide <strong>Values</strong> in your testing.</p>
+<p>To see the events passing from or to the remote fields for debugging, open the <strong>Logs</strong> section.</p>
+<h2 class="heading heading-2 header-scroll"><div class="heading-anchor anchor waypoint" id="create-a-remote-field"></div><div class="heading-text">Create a remote field</div><a aria-label="Skip link to Create a remote field" class="heading-anchor-icon fa fa-regular fa-anchor" href="#create-a-remote-field"></a></h2>
+<p>This section covers the steps required to create and submit your remote field in CMP.</p>
+<h3 class="heading heading-3 header-scroll"><div class="heading-anchor anchor waypoint" id="add-your-ssh-key"></div><div class="heading-text">Add your SSH key</div><a aria-label="Skip link to Add your SSH key" class="heading-anchor-icon fa fa-regular fa-anchor" href="#add-your-ssh-key"></a></h3>
+<p>Before building a remote field in the platform, you must supply your public SSH key.</p>
+<ol>
+<li>
+<p>Go to <strong>Settings</strong> &gt; <strong>Organization</strong> &gt; <strong>SSH Keys</strong> tab.</p>
+<blockquote class="callout callout_info" theme="📘"><span class="callout-icon">📘</span><h3 class="heading heading-3 header-scroll"><div class="heading-anchor anchor waypoint" id="note-2"></div><div class="heading-text">Note</div><a aria-label="Skip link to Note" class="heading-anchor-icon fa fa-regular fa-anchor" href="#note-2"></a></h3><p>You can include up to five SSH keys.</p></blockquote>
+</li>
+<li>
+<p>Add your public SSH key. You must encode the public SSH key in SSH-RSA format or PEM format. The minimum bit length of the public key is 2048 bits.<br>
+<span aria-label="Expand image" class="img lightbox closed" role="button" tabindex="0"><span class="lightbox-inner"><img alt="The SSH Key setting" class="img  " height="auto" loading="lazy" src="https://files.readme.io/c0a07fa-AddSSHKey.png" title="" width="auto"></span></span></p>
+</li>
+<li>
+<p>After you complete the SSH key upload, you get an Identity for that SSH key. Copy and save this SSH-Key-ID.</p>
+</li>
+<li>
+<p>On your local machine, use a text editor to create a file named config file in the <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">~/.ssh</span></code> directory (if it does not exist already), and then add the following lines at the end of the file:</p>
+<div class="CodeTabs CodeTabs_initial theme-light"><div class="CodeTabs-toolbar"><button type="button" value="shell">Shell</button></div><div class="CodeTabs-inner"><pre><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-shell theme-light" data-lang="shell"><div class="cm-s-neo" data-testid="SyntaxHighlighter">Host git-codecommit.*.amazonaws.com
+   User &lt;Your SSH Key ID&gt; <span class="cm-comment">## such as APKAEIBAERJR2EXAMPLE</span>
+   IdentityFile &lt;Your Private Key File&gt; <span class="cm-comment">## such as \~/.ssh/codecommit_rsa or \~/.ssh/id_rsa</span></div></code></pre></div></div>
+</li>
+<li>
+<p>From the terminal, run the following command to change the permissions for the config file:</p>
+<div class="CodeTabs CodeTabs_initial theme-light"><div class="CodeTabs-toolbar"><button type="button" value="shell">Shell</button></div><div class="CodeTabs-inner"><pre><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-shell theme-light" data-lang="shell"><div class="cm-s-neo" data-testid="SyntaxHighlighter"><span class="cm-builtin">chmod</span> <span class="cm-number">600</span> ~/.ssh/config</div></code></pre></div></div>
+</li>
+<li>
+<p>Run the following command to test your SSH configuration:</p>
+<div class="CodeTabs CodeTabs_initial theme-light"><div class="CodeTabs-toolbar"><button type="button" value="shell">Shell</button></div><div class="CodeTabs-inner"><pre><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-shell theme-light" data-lang="shell"><div class="cm-s-neo" data-testid="SyntaxHighlighter"><span class="cm-builtin">ssh</span> git-codecommit.us-east-2.amazonaws.com</div></code></pre></div></div>
+</li>
+</ol>
+<p>You can now push the code to the code commit repository.</p>
+<h3 class="heading heading-3 header-scroll"><div class="heading-anchor anchor waypoint" id="create-the-field"></div><div class="heading-text">Create the field</div><a aria-label="Skip link to Create the field" class="heading-anchor-icon fa fa-regular fa-anchor" href="#create-the-field"></a></h3>
+<ol>
+<li>Go to <strong>Settings</strong> &gt; <strong>Templates</strong> &gt; <strong>Content Model</strong> &gt; <strong>Remote Fields</strong>.</li>
+<li>Click <strong>Add</strong>. The <strong>New Remote Field</strong> form displays.</li>
+</ol>
+<span aria-label="Expand image" class="img lightbox closed" role="button" tabindex="0"><span class="lightbox-inner"><img alt="" class="img img-align-center " height="auto" loading="lazy" src="https://files.readme.io/7251c4c-AddRemoteField1.png" title="" width="auto"></span></span>
+<ul>
+<li>
+<p><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Name</span></code> – The name that your field will be known as to administrators.</p>
+</li>
+<li>
+<p><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Icon</span></code> – You may choose from a selection of icons that administrators will see as they build content types for marketers.</p>
+</li>
+<li>
+<p><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Description</span></code> – A description of your field, visible to Administrators with a maximum character count of 80</p>
+</li>
+<li>
+<p><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Active</span></code> – Set this to active when you are ready to make your field available.</p>
+</li>
+</ul>
+<ol start="3">
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<p>Several actions take place to provision a repository for you to push your code, which s may take a few minutes. The status changes to <strong>Ready to build</strong> and you are provided with the repository URL to use when pushing your code.</p>
+<span aria-label="Expand image" class="img lightbox closed" role="button" tabindex="0"><span class="lightbox-inner"><img alt="" class="img img-align-center " height="auto" loading="lazy" src="https://files.readme.io/67a6eaa-AddRemoteField2.png" title="" width="auto"></span></span>
+<h3 class="heading heading-3 header-scroll"><div class="heading-anchor anchor waypoint" id="publish-your-code"></div><div class="heading-text">Publish your code</div><a aria-label="Skip link to Publish your code" class="heading-anchor-icon fa fa-regular fa-anchor" href="#publish-your-code"></a></h3>
+<p>After provisioning your remote field repository, you get the URL to push your code. (You will need to have a local git repository.)</p>
+<ol>
+<li>In your git repository, add the URL that you obtained as a remote.
+<pre><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">git remote add &lt;remote-name&gt; &lt;your-repo-url&gt; # &lt;remote-name&gt; can be any name that isn't already used for another remote</span></code></pre>
+</li>
+<li>Push changes to the master branch.
+<pre><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-undefined theme-light"><span class="cm-s-neo" data-testid="SyntaxHighlighter">git push &lt;remote-name&gt; &lt;your-branch&gt;:master # push from branch named &lt;your-branch&gt; to the remote's master</span></code></pre>
+<blockquote class="callout callout_info" theme="📘"><span class="callout-icon">📘</span><h3 class="heading heading-3 header-scroll"><div class="heading-anchor anchor waypoint" id="note-3"></div><div class="heading-text">Note</div><a aria-label="Skip link to Note" class="heading-anchor-icon fa fa-regular fa-anchor" href="#note-3"></a></h3><p>You will have permission to push your code to the master branch of the <strong>CodeCommit</strong> repository only.</p></blockquote>
+</li>
+</ol>
+<p>After pushing the changes in the UI, the repository status will move through the following states:</p>
+<ol>
+<li><strong>Ready to build</strong></li>
+<li><strong>Building</strong></li>
+<li><strong>Deployed</strong> or <strong>Build Failed</strong> (depending on build success or failure respectively)</li>
+</ol>
+<p>The <strong>Status</strong> field will transition from</p>
+<ol>
+<li><strong>No deployment available</strong></li>
+<li><strong>Waiting for checks to pass...</strong></li>
+<li><strong>Ready to use</strong></li>
+</ol>
+<p>After the status is <strong>Ready to use</strong> you can use this remote field within your content type.</p>
+<h2 class="heading heading-2 header-scroll"><div class="heading-anchor anchor waypoint" id="use-a-remote-field"></div><div class="heading-text">Use a remote field</div><a aria-label="Skip link to Use a remote field" class="heading-anchor-icon fa fa-regular fa-anchor" href="#use-a-remote-field"></a></h2>
+<p>You can select and configure remote fields created by your developers from the platform as you create and edit content types. Go to <strong>Templates</strong> &gt; <strong>Content Model</strong> &gt; <strong>Add New</strong>. Your remote fields are available as you add fields to your component or content type.</p>
+<span aria-label="Expand image" class="img lightbox closed" role="button" tabindex="0"><span class="lightbox-inner"><img alt="" class="img img-align-center " height="auto" loading="lazy" src="https://files.readme.io/12e0941-UsingRF1.png" title="" width="auto"></span></span>
+<p>Any configuration options the developer provided are relevant to the specific content type you are currently using.</p>
+<span aria-label="Expand image" class="img lightbox closed" role="button" tabindex="0"><span class="lightbox-inner"><img alt="Configuring a particular instance of remote field" class="img  " height="auto" loading="lazy" src="https://files.readme.io/0f93d84-UsingRF2.png" title="" width="auto"></span></span></div></div><hr class="NextStepsDivider"></section>
