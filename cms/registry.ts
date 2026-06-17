@@ -50,6 +50,13 @@ import FeaturedDoctors, {
   FeaturedDoctorsContentType,
 } from './FeaturedDoctors';
 import BlogPost, { BlogPostContentType } from './BlogPost';
+import GenUIImpact, { GenUIImpactContentType } from './GenUIImpact';
+import GenUIAction, { GenUIActionContentType } from './GenUIAction';
+import GenUIProfile, { GenUIProfileContentType } from './GenUIProfile';
+import GenUIMilestone, { GenUIMilestoneContentType } from './GenUIMilestone';
+import GenUIEmbed, { GenUIEmbedContentType } from './GenUIEmbed';
+import GenUIJourney, { GenUIJourneyContentType } from './GenUIJourney';
+import GenUINarrative, { GenUINarrativeContentType } from './GenUINarrative';
 
 /**
  * Single configuration + registration point for the Optimizely SDK.
@@ -93,6 +100,13 @@ initContentTypeRegistry([
   DoctorContentType,
   FeaturedDoctorsContentType,
   BlogPostContentType,
+  GenUIImpactContentType,
+  GenUIActionContentType,
+  GenUIProfileContentType,
+  GenUIMilestoneContentType,
+  GenUIEmbedContentType,
+  GenUIJourneyContentType,
+  GenUINarrativeContentType,
 ]);
 
 initDisplayTemplateRegistry([
@@ -131,5 +145,12 @@ initReactComponentRegistry({
     BannerDemoDoctor: Doctor,
     BannerDemoFeaturedDoctors: FeaturedDoctors,
     BannerDemoBlogPost: BlogPost,
+    BannerGenUIImpact: GenUIImpact,
+    BannerGenUIAction: GenUIAction,
+    BannerGenUIProfile: GenUIProfile,
+    BannerGenUIMilestone: GenUIMilestone,
+    BannerGenUIEmbed: GenUIEmbed,
+    BannerGenUIJourney: GenUIJourney,
+    BannerGenUINarrative: GenUINarrative,
   },
 });
