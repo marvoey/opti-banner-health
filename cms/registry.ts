@@ -57,6 +57,8 @@ import GenUIMilestone, { GenUIMilestoneContentType } from './GenUIMilestone';
 import GenUIEmbed, { GenUIEmbedContentType } from './GenUIEmbed';
 import GenUIJourney, { GenUIJourneyContentType } from './GenUIJourney';
 import GenUINarrative, { GenUINarrativeContentType } from './GenUINarrative';
+import GenUIPage, { GenUIPageContentType } from './GenUIPage';
+import GenUIPage2, { GenUIPage2ContentType } from './GenUIPage2';
 
 /**
  * Single configuration + registration point for the Optimizely SDK.
@@ -107,6 +109,8 @@ initContentTypeRegistry([
   GenUIEmbedContentType,
   GenUIJourneyContentType,
   GenUINarrativeContentType,
+  GenUIPageContentType,
+  GenUIPage2ContentType,
 ]);
 
 initDisplayTemplateRegistry([
@@ -152,5 +156,7 @@ initReactComponentRegistry({
     BannerGenUIEmbed: GenUIEmbed,
     BannerGenUIJourney: GenUIJourney,
     BannerGenUINarrative: GenUINarrative,
+    BannerGenUIPage: GenUIPage,
+    BannerGenUIPage2: GenUIPage2,
   },
 });

@@ -1,3 +1,5 @@
+"use client";
+
 import { contentType, type ContentProps } from '@optimizely/cms-sdk';
 import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 
@@ -14,7 +16,7 @@ export const GenUIActionContentType = contentType({
   baseType: '_component',
   displayName: 'GenUI: Action',
   description: 'Transactional block for decisions and conversions (Bills, CTAs).',
-  compositionBehaviors: ['sectionEnabled', 'elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     PrimaryValue: { type: 'string', displayName: 'Primary Value', description: 'The headline value (e.g. $142.00).', sortOrder: 10 },
     ValueLabel: { type: 'string', displayName: 'Value Label', description: 'Label for the value (e.g. Amount Due).', sortOrder: 20 },

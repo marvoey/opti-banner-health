@@ -11,7 +11,7 @@ export const LocationSearchHeroContentType = contentType({
   key: 'BannerDemoLocationSearchHero',
   baseType: '_component',
   displayName: 'Banner: Location Search Hero',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     headline: { type: 'string', displayName: 'Headline', group: 'demo', isLocalized: true },
     searchPlaceholder: { type: 'string', displayName: 'Search Placeholder', group: 'demo', isLocalized: true },

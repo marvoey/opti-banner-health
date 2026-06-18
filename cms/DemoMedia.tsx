@@ -6,7 +6,7 @@ export const DemoMediaContentType = contentType({
   key: 'DemoMedia',
   baseType: '_component',
   displayName: 'Banner: Demo Media',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     image: {
       type: 'contentReference',

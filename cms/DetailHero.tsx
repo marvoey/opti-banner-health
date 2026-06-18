@@ -12,7 +12,7 @@ export const DetailHeroContentType = contentType({
   key: 'BannerDemoDetailHero',
   baseType: '_component',
   displayName: 'Banner: Detail Hero',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     breadcrumbParent: { type: 'string', displayName: 'Breadcrumb Parent', group: 'demo', isLocalized: true },
     breadcrumbCurrent: { type: 'string', displayName: 'Breadcrumb Current', group: 'demo', isLocalized: true },

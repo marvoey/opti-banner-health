@@ -14,7 +14,7 @@ export const GenUIMilestoneContentType = contentType({
   baseType: '_component',
   displayName: 'GenUI: Milestone Item',
   description: 'A single milestone within a care journey or wellness plan.',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     Label: { type: 'string', displayName: 'Label', description: 'The name of the milestone.', sortOrder: 10 },
     StatusDate: { type: 'string', displayName: 'Status/Date', description: "Date or current status (e.g. 'June 20' or 'In Progress').", sortOrder: 20 },

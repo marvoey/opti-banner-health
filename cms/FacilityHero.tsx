@@ -11,7 +11,7 @@ export const FacilityHeroContentType = contentType({
   key: 'BannerDemoFacilityHero',
   baseType: '_component',
   displayName: 'Banner: Facility Hero',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     breadcrumb: {
       type: 'array',

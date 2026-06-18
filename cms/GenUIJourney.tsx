@@ -14,7 +14,7 @@ export const GenUIJourneyContentType = contentType({
   key: 'BannerGenUIJourney',
   baseType: '_component',
   displayName: 'BannerGenUI: Journey',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     JourneyTitle: { type: 'string', displayName: 'Journey Title', description: 'The name of the roadmap.', sortOrder: 10 },
     ProgressPercentage: { type: 'integer', displayName: 'Progress Percentage', description: 'Overall progress (0-100).', sortOrder: 20 },

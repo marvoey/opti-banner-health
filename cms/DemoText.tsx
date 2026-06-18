@@ -12,7 +12,7 @@ export const DemoTextContentType = contentType({
   key: 'DemoText',
   baseType: '_component',
   displayName: 'Banner: Demo Text',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     text: { type: 'richText', displayName: 'Text', group: 'demo', isLocalized: true },
   },

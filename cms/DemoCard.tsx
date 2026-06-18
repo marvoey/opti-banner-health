@@ -7,7 +7,7 @@ export const DemoCardContentType = contentType({
   key: 'DemoCard',
   baseType: '_component',
   displayName: 'Banner: Demo Card',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     heading: { type: 'string', displayName: 'Heading', group: 'demo', isLocalized: true },
     body: { type: 'richText', displayName: 'Body', group: 'demo', isLocalized: true },

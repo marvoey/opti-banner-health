@@ -14,7 +14,7 @@ export const GenUINarrativeContentType = contentType({
   key: 'BannerGenUINarrative',
   baseType: '_component',
   displayName: 'BannerGenUI:Narrative',
-  compositionBehaviors: ['sectionEnabled', 'elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     Title: { type: 'string', displayName: 'Title', description: 'The main heading.', sortOrder: 10 },
     Subtitle: { type: 'string', displayName: 'Subtitle', description: 'Secondary heading.', sortOrder: 20 },

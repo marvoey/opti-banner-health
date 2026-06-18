@@ -12,7 +12,7 @@ export const ServicesGridAutoContentType = contentType({
   key: 'BannerDemoServicesGridAuto',
   baseType: '_component',
   displayName: 'Banner: Services Grid (Auto)',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },
     description: { type: 'string', displayName: 'Description', group: 'demo', isLocalized: true },

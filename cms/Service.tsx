@@ -14,7 +14,7 @@ export const ServiceContentType = contentType({
   key: 'BannerDemoService',
   baseType: '_component',
   displayName: 'Banner: Service',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     name: { type: 'string', displayName: 'Service Name', group: 'demo', isRequired: true, isLocalized: true },
     description: { type: 'string', displayName: 'Clinical Description', group: 'demo', isLocalized: true },

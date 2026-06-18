@@ -10,7 +10,7 @@ export const TestimonialContentType = contentType({
   key: 'BannerDemoTestimonial',
   baseType: '_component',
   displayName: 'Banner: Testimonial',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     quote: { type: 'string', displayName: 'Quote', group: 'demo', isLocalized: true },
     attribution: { type: 'string', displayName: 'Attribution', group: 'demo', isLocalized: true },

@@ -11,7 +11,7 @@ export const ServicesHeaderContentType = contentType({
   key: 'BannerDemoServicesHeader',
   baseType: '_component',
   displayName: 'Banner: Services Header',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },
     description: { type: 'string', displayName: 'Description', group: 'demo', isLocalized: true },

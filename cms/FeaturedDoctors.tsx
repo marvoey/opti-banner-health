@@ -12,7 +12,7 @@ export const DoctorContentType = contentType({
   key: 'BannerDemoDoctor',
   baseType: '_component',
   displayName: 'Banner: Doctor',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     name: { type: 'string', displayName: 'Name', group: 'demo', isLocalized: true },
     specialty: { type: 'string', displayName: 'Specialty', group: 'demo', isLocalized: true },
@@ -47,7 +47,7 @@ export const FeaturedDoctorsContentType = contentType({
   key: 'BannerDemoFeaturedDoctors',
   baseType: '_component',
   displayName: 'Banner: Featured Doctors',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     heading: { type: 'string', displayName: 'Heading', group: 'demo', isLocalized: true },
     directoryLabel: { type: 'string', displayName: 'Directory Label', group: 'demo', isLocalized: true },

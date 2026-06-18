@@ -14,7 +14,7 @@ export const LocationContentType = contentType({
   key: 'BannerDemoLocation',
   baseType: '_component',
   displayName: 'Banner: Location',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     name: { type: 'string', displayName: 'Name', group: 'demo', isLocalized: true },
     address: { type: 'string', displayName: 'Address', group: 'demo', isLocalized: true },
@@ -33,7 +33,7 @@ export const LocationResultsContentType = contentType({
   key: 'BannerDemoLocationResults',
   baseType: '_component',
   displayName: 'Banner: Location Results',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     locations: {
       type: 'array',

@@ -13,7 +13,7 @@ export const QuickCareCardContentType = contentType({
   key: 'BannerDemoQuickCareCard',
   baseType: '_component',
   displayName: 'Banner: Quick Care Card',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },
     description: { type: 'string', displayName: 'Description', group: 'demo', isLocalized: true },
@@ -44,7 +44,7 @@ export const QuickCareCardsContentType = contentType({
   key: 'BannerDemoQuickCareCards',
   baseType: '_component',
   displayName: 'Banner: Quick Care Cards',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     cards: {
       type: 'array',

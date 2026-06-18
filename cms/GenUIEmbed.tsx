@@ -15,7 +15,7 @@ export const GenUIEmbedContentType = contentType({
   baseType: '_component',
   displayName: 'GenUI: Embed',
   description: 'Container for 3rd party widgets and tools (Maps, Schedulers).',
-  compositionBehaviors: ['sectionEnabled', 'elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     ServiceTitle: { type: 'string', displayName: 'Service Title', description: 'The name of the embedded tool.', sortOrder: 10 },
     ServiceProviderID: { type: 'string', displayName: 'Service Provider ID', description: 'ID or Key for the service provider (e.g. GoogleMaps).', sortOrder: 20 },

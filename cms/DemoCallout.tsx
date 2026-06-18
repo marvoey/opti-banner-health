@@ -6,7 +6,7 @@ export const DemoCalloutContentType = contentType({
   key: 'DemoCallout',
   baseType: '_component',
   displayName: 'Banner: Demo Callout',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },
     cta: { type: 'link', displayName: 'Call to Action', group: 'demo', isLocalized: true },

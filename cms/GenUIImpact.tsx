@@ -15,7 +15,7 @@ export const GenUIImpactContentType = contentType({
   baseType: '_component',
   displayName: 'GenUI: Impact',
   description: 'High-impact hero blocks or urgent global alerts.',
-  compositionBehaviors: ['sectionEnabled', 'elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     Headline: { type: 'string', displayName: 'Headline', description: 'Main high-impact heading.', sortOrder: 10 },
     Subtext: { type: 'string', displayName: 'Subtext', description: 'Supporting description.', sortOrder: 20 },

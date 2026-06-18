@@ -14,7 +14,7 @@ export const GenUIProfileContentType = contentType({
   baseType: '_component',
   displayName: 'GenUI: Profile',
   description: 'Entity block for providers, facilities, and centers.',
-  compositionBehaviors: ['sectionEnabled', 'elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     EntityName: { type: 'string', displayName: 'Entity Name', description: 'Name of the person or place.', sortOrder: 10 },
     ProfileImage: {

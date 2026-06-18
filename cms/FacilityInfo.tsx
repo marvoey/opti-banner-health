@@ -9,7 +9,7 @@ export const FacilityInfoContentType = contentType({
   key: 'BannerDemoFacilityInfo',
   baseType: '_component',
   displayName: 'Banner: Facility Info',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     image: {
       type: 'contentReference',

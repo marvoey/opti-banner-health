@@ -12,7 +12,7 @@ export const ConditionContentType = contentType({
   key: 'BannerDemoCondition',
   baseType: '_component',
   displayName: 'Banner: Condition',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     title: { type: 'string', displayName: 'Title', group: 'demo', isLocalized: true },
     description: { type: 'string', displayName: 'Description', group: 'demo', isLocalized: true },
@@ -42,7 +42,7 @@ export const ConditionGridContentType = contentType({
   key: 'BannerDemoConditionGrid',
   baseType: '_component',
   displayName: 'Banner: Condition Grid',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     heading: { type: 'string', displayName: 'Heading', group: 'demo', isLocalized: true },
     description: { type: 'string', displayName: 'Description', group: 'demo', isLocalized: true },
