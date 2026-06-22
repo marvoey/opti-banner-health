@@ -9,10 +9,8 @@ import { buildConfig } from '@optimizely/cms-sdk';
  */
 export default buildConfig({
   components: ['./cms/**/*.tsx'],
-  propertyGroups: [
-    // sortOrder below the built-in/system groups (which sit at 0–60) so the
-    // content-type's own fields appear at the TOP of the editor, with the CMS
-    // system groups (Settings, SEO, Categories, …) falling below them.
-    { key: 'demo', displayName: 'Banner Content', sortOrder: -10 },
-  ],
+  // Declare custom property groups here as content types are added back.
+  // Use a negative sortOrder to float a group above the built-in/system groups
+  // (Settings, SEO, Categories, …), which sit at 0–60.
+  propertyGroups: [],
 });

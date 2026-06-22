@@ -2,63 +2,8 @@ import {
   config,
   initContentTypeRegistry,
   initDisplayTemplateRegistry,
-  BlankExperienceContentType,
-  BlankSectionContentType,
 } from '@optimizely/cms-sdk';
 import { initReactComponentRegistry } from '@optimizely/cms-sdk/react/server';
-
-import BlankExperience from './BlankExperience';
-import BlankSection, { BlankSectionDisplayTemplate } from './BlankSection';
-import DemoSection, { DemoSectionContentType, DemoSectionDisplayTemplate } from './DemoSection';
-import Hero, { HeroContentType } from './Hero';
-import Service, { ServiceContentType } from './Service';
-import DemoText, { DemoTextContentType } from './DemoText';
-import DemoCard, { DemoCardContentType } from './DemoCard';
-import DemoMedia, { DemoMediaContentType } from './DemoMedia';
-import DemoCallout, { DemoCalloutContentType } from './DemoCallout';
-import ServicesGrid, {
-  ServicesGridContentType,
-  ServicesGridDisplayTemplate,
-} from './ServicesGrid';
-import ServicesHeader, { ServicesHeaderContentType } from './ServicesHeader';
-import ServicesGridAuto, { ServicesGridAutoContentType } from './ServicesGridAuto';
-import QuickCareCards, {
-  QuickCareCard,
-  QuickCareCardContentType,
-  QuickCareCardsContentType,
-} from './QuickCareCards';
-import Testimonial, { TestimonialContentType } from './Testimonial';
-import ServicesHero, { ServicesHeroContentType } from './ServicesHero';
-import ServiceCtaBanner, { ServiceCtaBannerContentType } from './ServiceCtaBanner';
-import DetailHero, { DetailHeroContentType } from './DetailHero';
-import ConditionGrid, {
-  Condition,
-  ConditionContentType,
-  ConditionGridContentType,
-} from './ConditionGrid';
-import LocationSearchHero, { LocationSearchHeroContentType } from './LocationSearchHero';
-import LocationResults, {
-  Location,
-  LocationContentType,
-  LocationResultsContentType,
-} from './LocationResults';
-import FacilityHero, { FacilityHeroContentType } from './FacilityHero';
-import FacilityInfo, { FacilityInfoContentType } from './FacilityInfo';
-import FeaturedDoctors, {
-  Doctor,
-  DoctorContentType,
-  FeaturedDoctorsContentType,
-} from './FeaturedDoctors';
-import BlogPost, { BlogPostContentType } from './BlogPost';
-import GenUIImpact, { GenUIImpactContentType } from './GenUIImpact';
-import GenUIAction, { GenUIActionContentType } from './GenUIAction';
-import GenUIProfile, { GenUIProfileContentType } from './GenUIProfile';
-import GenUIMilestone, { GenUIMilestoneContentType } from './GenUIMilestone';
-import GenUIEmbed, { GenUIEmbedContentType } from './GenUIEmbed';
-import GenUIJourney, { GenUIJourneyContentType } from './GenUIJourney';
-import GenUINarrative, { GenUINarrativeContentType } from './GenUINarrative';
-import GenUIPage, { GenUIPageContentType } from './GenUIPage';
-import GenUIPage2, { GenUIPage2ContentType } from './GenUIPage2';
 
 /**
  * Single configuration + registration point for the Optimizely SDK.
@@ -67,96 +12,25 @@ import GenUIPage2, { GenUIPage2ContentType } from './GenUIPage2';
  * Named registry.ts (not .tsx) so the optimizely.config.mjs `./cms/**\/*.tsx`
  * glob does not pick it up during `opti-cli config push` — only the files that
  * define content types should be scanned.
+ *
+ * All content types were de-registered for a fresh start. To add a new one:
+ *   1. Define it in a cms/<Name>.tsx file (export the contentType() + a default
+ *      React component, plus any display template).
+ *   2. Import it here and register it in the three calls below:
+ *        - initContentTypeRegistry      → the contentType() definition
+ *        - initDisplayTemplateRegistry  → any display template(s)
+ *        - initReactComponentRegistry   → map the content type key → component
+ *   3. Run `npm run config:push` to push the type(s) to the CMS.
  */
 config({
   apiKey: process.env.OPTIMIZELY_GRAPH_SINGLE_KEY!,
   graphUrl: process.env.OPTIMIZELY_GRAPH_GATEWAY,
 });
 
-initContentTypeRegistry([
-  BlankExperienceContentType,
-  BlankSectionContentType,
-  DemoSectionContentType,
-  HeroContentType,
-  ServiceContentType,
-  DemoTextContentType,
-  DemoCardContentType,
-  DemoMediaContentType,
-  DemoCalloutContentType,
-  ServicesGridContentType,
-  ServicesHeaderContentType,
-  ServicesGridAutoContentType,
-  QuickCareCardContentType,
-  QuickCareCardsContentType,
-  TestimonialContentType,
-  ServicesHeroContentType,
-  ServiceCtaBannerContentType,
-  DetailHeroContentType,
-  ConditionContentType,
-  ConditionGridContentType,
-  LocationSearchHeroContentType,
-  LocationContentType,
-  LocationResultsContentType,
-  FacilityHeroContentType,
-  FacilityInfoContentType,
-  DoctorContentType,
-  FeaturedDoctorsContentType,
-  BlogPostContentType,
-  GenUIImpactContentType,
-  GenUIActionContentType,
-  GenUIProfileContentType,
-  GenUIMilestoneContentType,
-  GenUIEmbedContentType,
-  GenUIJourneyContentType,
-  GenUINarrativeContentType,
-  GenUIPageContentType,
-  GenUIPage2ContentType,
-]);
+initContentTypeRegistry([]);
 
-initDisplayTemplateRegistry([
-  DemoSectionDisplayTemplate,
-  ServicesGridDisplayTemplate,
-  BlankSectionDisplayTemplate,
-]);
+initDisplayTemplateRegistry([]);
 
 initReactComponentRegistry({
-  resolver: {
-    BlankExperience,
-    BlankSection,
-    DemoSection,
-    BannerDemoHero: Hero,
-    BannerDemoService: Service,
-    DemoText,
-    DemoCard,
-    DemoMedia,
-    DemoCallout,
-    BannerDemoServicesGrid: ServicesGrid,
-    BannerDemoServicesHeader: ServicesHeader,
-    BannerDemoServicesGridAuto: ServicesGridAuto,
-    BannerDemoQuickCareCard: QuickCareCard,
-    BannerDemoQuickCareCards: QuickCareCards,
-    BannerDemoTestimonial: Testimonial,
-    BannerDemoServicesHero: ServicesHero,
-    BannerDemoServiceCtaBanner: ServiceCtaBanner,
-    BannerDemoDetailHero: DetailHero,
-    BannerDemoCondition: Condition,
-    BannerDemoConditionGrid: ConditionGrid,
-    BannerDemoLocationSearchHero: LocationSearchHero,
-    BannerDemoLocation: Location,
-    BannerDemoLocationResults: LocationResults,
-    BannerDemoFacilityHero: FacilityHero,
-    BannerDemoFacilityInfo: FacilityInfo,
-    BannerDemoDoctor: Doctor,
-    BannerDemoFeaturedDoctors: FeaturedDoctors,
-    BannerDemoBlogPost: BlogPost,
-    BannerGenUIImpact: GenUIImpact,
-    BannerGenUIAction: GenUIAction,
-    BannerGenUIProfile: GenUIProfile,
-    BannerGenUIMilestone: GenUIMilestone,
-    BannerGenUIEmbed: GenUIEmbed,
-    BannerGenUIJourney: GenUIJourney,
-    BannerGenUINarrative: GenUINarrative,
-    BannerGenUIPage: GenUIPage,
-    BannerGenUIPage2: GenUIPage2,
-  },
+  resolver: {},
 });
