@@ -6,7 +6,7 @@
     "node": "22.x"
   },
   "scripts": {
-    "dev": "next dev -p 3006",
+    "dev": "next dev -p 3008",
     "predev": "npm run gen:locales",
     "build": "next build",
     "prebuild": "npm run gen:locales",

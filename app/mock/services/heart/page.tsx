@@ -19,7 +19,7 @@ const HeartServicesPage = () => (
     {/* Overlay Edit Simulation Label (Internal Only) */}
     <PreviewBadge
       className="bg-blue-600 text-white border-blue-400"
-      dotClassName="bg-yellow-400 animate-ping"
+      dotClassName="bg-blue-400 animate-ping"
       label="Stage 3: Intent (Capturing the Signal)"
     />
 

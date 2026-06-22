@@ -1,7 +1,7 @@
 import { MapPin } from 'lucide-react';
 
 const UrgentCareSearch = () => (
-  <section className="bg-[#00205C] text-white py-12" data-cms-component="UrgentCareSearch">
+  <section className="bg-[#002E4D] text-white py-12" data-cms-component="UrgentCareSearch">
     <div className="container mx-auto px-12">
       <h1 className="text-4xl font-serif font-bold mb-8" data-cms-field="headline">
         Urgent Care Near You
@@ -11,11 +11,11 @@ const UrgentCareSearch = () => (
           <input
             type="text"
             defaultValue="Phoenix, AZ"
-            className="w-full bg-white text-slate-900 px-6 py-4 rounded-xl font-medium focus:ring-4 focus:ring-yellow-400 outline-none"
+            className="w-full bg-white text-slate-900 px-6 py-4 rounded-xl font-medium focus:ring-4 focus:ring-blue-400 outline-none"
           />
           <MapPin size={20} className="absolute right-4 top-4 text-blue-600" />
         </div>
-        <button className="bg-[#FFD100] text-[#00205C] px-10 py-4 rounded-xl font-bold uppercase hover:bg-yellow-400 transition-colors">
+        <button className="bg-[#55C6E6] text-[#002E4D] px-10 py-4 rounded-xl font-bold uppercase hover:bg-blue-400 transition-colors">
           Update Location
         </button>
       </div>

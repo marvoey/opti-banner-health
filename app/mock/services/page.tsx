@@ -6,7 +6,7 @@ import Footer from '../../_components/Footer';
 import PreviewBadge from '../../_components/PreviewBadge';
 
 /**
- * BANNER HEALTH - SERVICES INDEX
+ * LOUISIANA BLUE - SERVICES INDEX
  *
  * A comprehensive directory of all medical services, organized by category.
  *
@@ -17,8 +17,8 @@ const ServicesPage = () => (
   <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
     {/* Overlay Edit Simulation Label (Internal Only) */}
     <PreviewBadge
-      className="bg-[#FFD100] text-[#00205C] border-[#00205C]/10"
-      dotClassName="bg-[#00205C] animate-pulse"
+      className="bg-[#55C6E6] text-[#002E4D] border-[#002E4D]/10"
+      dotClassName="bg-[#002E4D] animate-pulse"
       label="Stage 2: Discovery (Organization at Scale)"
     />
 

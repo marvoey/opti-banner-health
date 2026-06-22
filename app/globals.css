@@ -12,16 +12,30 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Banner Health brand navy (#00205C) — remaps the blue palette site-wide */
-  --color-blue-950: #001640;
-  --color-blue-900: #00205c;
-  --color-blue-800: #00205c;
-  --color-blue-700: #1d2d5c;
-  --color-blue-600: #2a3f7a;
-  --color-blue-300: #8fa0c4;
-  --color-blue-200: #b9c4dc;
-  --color-blue-100: #dbe1ee;
-  --color-blue-50: #eef1f7;
+  /*
+   * Louisiana Blue (Blue Cross and Blue Shield of Louisiana) brand palette,
+   * sampled from lablue.com. The blue-* scale is remapped site-wide so the
+   * brand primary (#007BB2) lands on blue-800 (buttons/links), the deep navy
+   * (#002E4D) on blue-950 (footer/hero), and the sky accent (#55C6E6) on the
+   * lighter steps.
+   */
+  --color-blue-950: #002e4d; /* deep navy */
+  --color-blue-900: #004370; /* mid navy */
+  --color-blue-800: #007bb2; /* brand primary blue */
+  --color-blue-700: #0089c7;
+  --color-blue-600: #009de1; /* BCBS cross/shield blue */
+  --color-blue-500: #1cb0e8;
+  --color-blue-400: #55c6e6; /* sky accent */
+  --color-blue-300: #8fdaf0;
+  --color-blue-200: #bfe9f7;
+  --color-blue-100: #ddf4fb;
+  --color-blue-50: #ebfaff; /* light wash */
+
+  /* Named brand tokens for direct use */
+  --color-brand: #007bb2;
+  --color-brand-navy: #002e4d;
+  --color-brand-sky: #55c6e6;
+  --color-brand-red: #d22121;
 }
 
 @media (prefers-color-scheme: dark) {

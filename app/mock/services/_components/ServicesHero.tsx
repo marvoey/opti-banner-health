@@ -4,7 +4,7 @@ const ServicesHero = () => (
   <section className="bg-slate-50 py-20 border-b border-gray-200" data-cms-component="ServicesHero">
     <div className="container mx-auto px-12">
       <div className="max-w-3xl">
-        <h1 className="text-5xl lg:text-6xl font-serif font-bold text-[#00205C] leading-tight mb-8" data-cms-field="headline">
+        <h1 className="text-5xl lg:text-6xl font-serif font-bold text-[#002E4D] leading-tight mb-8" data-cms-field="headline">
           Conditions {'&'} Services
         </h1>
         <p className="text-xl text-[#4A4A4A] leading-relaxed mb-12 font-medium" data-cms-field="description">
@@ -16,9 +16,9 @@ const ServicesHero = () => (
           <input
             type="text"
             placeholder="Search for a service or condition (e.g. Cardiology)"
-            className="w-full bg-white border-2 border-gray-200 rounded-2xl py-5 pl-14 pr-6 text-lg font-medium shadow-sm group-hover:border-[#FFD100] transition-all outline-none"
+            className="w-full bg-white border-2 border-gray-200 rounded-2xl py-5 pl-14 pr-6 text-lg font-medium shadow-sm group-hover:border-[#55C6E6] transition-all outline-none"
           />
-          <Search size={24} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-[#00205C] transition-colors" />
+          <Search size={24} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-[#002E4D] transition-colors" />
           <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-gray-100 px-3 py-1 rounded text-[10px] font-bold text-gray-400 uppercase tracking-widest">A-Z Index</div>
         </div>
       </div>

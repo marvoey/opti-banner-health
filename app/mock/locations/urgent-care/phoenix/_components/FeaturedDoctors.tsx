@@ -10,8 +10,8 @@ const FeaturedDoctors = () => {
     <section className="py-24 bg-[#f8fafc]" data-cms-component="FeaturedDoctors">
       <div className="container mx-auto px-12">
         <div className="flex justify-between items-end mb-16 border-b-2 border-gray-200 pb-8">
-          <h2 className="text-4xl font-serif font-bold text-[#00205C]">Meet Our Phoenix Specialists</h2>
-          <button className="text-[#00205C] font-black text-xs uppercase tracking-widest hover:underline flex items-center gap-2">
+          <h2 className="text-4xl font-serif font-bold text-[#002E4D]">Meet Our Phoenix Specialists</h2>
+          <button className="text-[#002E4D] font-black text-xs uppercase tracking-widest hover:underline flex items-center gap-2">
             View Full Directory <ChevronRight size={14} />
           </button>
         </div>
@@ -25,17 +25,17 @@ const FeaturedDoctors = () => {
               </div>
               <div className="flex-grow">
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-2xl font-bold text-[#00205C]">{doc.name}</h3>
+                  <h3 className="text-2xl font-bold text-[#002E4D]">{doc.name}</h3>
                   <div className="flex items-center gap-1.5 bg-yellow-50 px-3 py-1 rounded-lg">
                     <Star size={14} className="fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm font-black text-[#00205C]">{doc.rating}</span>
+                    <span className="text-sm font-black text-[#002E4D]">{doc.rating}</span>
                   </div>
                 </div>
                 <p className="text-blue-600 font-black uppercase tracking-widest text-[10px] mb-4">{doc.specialty}</p>
                 <p className="text-slate-500 text-sm font-medium mb-6">Expert care specializing in {doc.specialty.toLowerCase()} at our Phoenix Institute.</p>
                 <div className="flex gap-4">
-                  <button className="bg-slate-50 text-[#00205C] px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-tighter hover:bg-[#FFD100] transition-colors">Profile</button>
-                  <button className="flex-grow border-2 border-[#00205C] text-[#00205C] px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-[#00205C] hover:text-white transition-all">Book Online</button>
+                  <button className="bg-slate-50 text-[#002E4D] px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-tighter hover:bg-[#55C6E6] transition-colors">Profile</button>
+                  <button className="flex-grow border-2 border-[#002E4D] text-[#002E4D] px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-[#002E4D] hover:text-white transition-all">Book Online</button>
                 </div>
               </div>
             </div>

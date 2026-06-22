@@ -2,9 +2,9 @@ import { ChevronRight } from 'lucide-react';
 
 const ServicesGrid = () => {
   const services = [
-    "Primary Care", "Cardiology", "Cancer Care", "Urgent Care",
-    "Pediatrics", "Imaging", "Orthopedics", "Women's Health",
-    "Emergency Care", "Physical Therapy", "Telehealth", "Diabetes Care"
+    "Individual & Family", "Medicare", "Medicare Advantage", "Group Plans",
+    "Dental", "Vision", "Pharmacy", "Wellness Programs",
+    "Telehealth", "Find a Doctor", "HSA & FSA", "Member Discounts"
   ];
 
   return (
@@ -12,8 +12,8 @@ const ServicesGrid = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-end mb-12">
           <div className="max-w-xl">
-            <h2 className="text-3xl font-serif font-bold text-slate-900 mb-4" data-cms-field="grid_title">Expertise for every stage of life</h2>
-            <p className="text-slate-600" data-cms-field="grid_description">Banner Health offers comprehensive care from routine exams to specialized treatments across our entire network.</p>
+            <h2 className="text-3xl font-serif font-bold text-slate-900 mb-4" data-cms-field="grid_title">Coverage for every stage of life</h2>
+            <p className="text-slate-600" data-cms-field="grid_description">Louisiana Blue offers health plans and benefits built for Louisianians — from individual and family coverage to Medicare, group, and wellness options.</p>
           </div>
           <button className="hidden sm:block text-blue-800 font-bold hover:underline">View All Services</button>
         </div>

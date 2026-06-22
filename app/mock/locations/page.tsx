@@ -6,7 +6,7 @@ import Footer from '../../_components/Footer';
 import PreviewBadge from '../../_components/PreviewBadge';
 
 /**
- * BANNER HEALTH - LOCALIZED URGENCY (PHOENIX URGENT CARE FINDER)
+ * LOUISIANA BLUE - LOCALIZED URGENCY (PHOENIX URGENT CARE FINDER)
  *
  * Scenario: Visitor from Phoenix is looking for immediate care.
  * DXP Value: Dynamic surfacing of wait times and location-specific clinics.

@@ -8,7 +8,7 @@ import Footer from '../_components/Footer';
 import PreviewBadge from '../_components/PreviewBadge';
 
 /**
- * BANNER HEALTH - GENERIC AWARENESS MOCKUP
+ * LOUISIANA BLUE - GENERIC AWARENESS MOCKUP
  *
  * This Next.js (App Router style) application is structured as a collection of
  * modular components. Each component is designed to simulate a "Live Preview"
@@ -16,7 +16,7 @@ import PreviewBadge from '../_components/PreviewBadge';
  * targeted for overlay editing.
  */
 
-const BannerHomepageMockup = () => {
+const LouisianaBlueHomepageMockup = () => {
   // Simulating CMS Content Data
   const heroContent: HeroContent = {
     kicker: "Health Care Made Easier",
@@ -47,4 +47,4 @@ const BannerHomepageMockup = () => {
   );
 };
 
-export default BannerHomepageMockup;
+export default LouisianaBlueHomepageMockup;

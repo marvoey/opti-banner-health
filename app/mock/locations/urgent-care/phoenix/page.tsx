@@ -7,7 +7,7 @@ import FacilityInfo from './_components/FacilityInfo';
 import Footer from '../../../../_components/Footer';
 
 /**
- * STAGE 4: FINAL DESTINATION - BANNER UNIVERSITY MEDICINE HEART INSTITUTE
+ * STAGE 4: FINAL DESTINATION - LOUISIANA BLUE HEART & CARDIOVASCULAR INSTITUTE
  *
  * The localized conversion destination a high-intent Phoenix visitor lands on.
  *
@@ -18,8 +18,8 @@ const PhoenixHeartInstitutePage = () => (
   <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
     {/* Overlay Edit Simulation Label (Internal Only) */}
     <PreviewBadge
-      className="bg-[#00205C] text-white border-blue-900"
-      dotClassName="bg-yellow-400 shadow-[0_0_8px_#FFD100]"
+      className="bg-[#002E4D] text-white border-blue-900"
+      dotClassName="bg-blue-400 shadow-[0_0_8px_#55C6E6]"
       label="Stage 5: Conversion (The Finish Line)"
     />
 
