@@ -7,6 +7,23 @@ import { initReactComponentRegistry } from '@optimizely/cms-sdk/react/server';
 
 import ExperiencePage, { ExperiencePageContentType } from './ExperiencePage';
 import Page, { PageContentType } from './Page';
+import BlogPost, { BlogPostContentType } from './BlogPost';
+
+// Louisiana Blue generative-authoring blocks (demo-notes/052 + 052a).
+import DynamicHero, { DynamicHeroContentType } from './DynamicHero';
+import SearchGateway, { SearchGatewayContentType } from './SearchGateway';
+import RegulatoryDisclaimer, { RegulatoryDisclaimerContentType } from './RegulatoryDisclaimer';
+import GridCardSelector, {
+  CardBlock,
+  CardBlockContentType,
+  GridCardSelectorContentType,
+} from './GridCardSelector';
+import LeadCaptureForm, {
+  FormField,
+  FormFieldContentType,
+  LeadCaptureFormContentType,
+} from './LeadCaptureForm';
+import NetworkStatusAlert, { NetworkStatusAlertContentType } from './NetworkStatusAlert';
 
 /**
  * Single configuration + registration point for the Optimizely SDK.
@@ -33,6 +50,17 @@ config({
 initContentTypeRegistry([
   ExperiencePageContentType,
   PageContentType,
+  BlogPostContentType,
+  // Blocks
+  DynamicHeroContentType,
+  SearchGatewayContentType,
+  RegulatoryDisclaimerContentType,
+  GridCardSelectorContentType,
+  LeadCaptureFormContentType,
+  NetworkStatusAlertContentType,
+  // Nested helper types (referenced inside ContentAreas, not dropped on canvas)
+  CardBlockContentType,
+  FormFieldContentType,
 ]);
 
 initDisplayTemplateRegistry([]);
@@ -41,5 +69,16 @@ initReactComponentRegistry({
   resolver: {
     ExperiencePage,
     Page,
+    BlogPost,
+    // Blocks (resolver key === content-type key)
+    DynamicHeroBlock: DynamicHero,
+    SearchGatewayBlock: SearchGateway,
+    RegulatoryDisclaimerBlock: RegulatoryDisclaimer,
+    GridCardSelectorBlock: GridCardSelector,
+    LeadCaptureFormBlock: LeadCaptureForm,
+    NetworkStatusAlertBlock: NetworkStatusAlert,
+    // Nested helper components, so they render inside their parent's ContentArea
+    CardBlock,
+    FormFieldBlock: FormField,
   },
 });
