@@ -5,6 +5,9 @@ import {
 } from '@optimizely/cms-sdk';
 import { initReactComponentRegistry } from '@optimizely/cms-sdk/react/server';
 
+import ExperiencePage, { ExperiencePageContentType } from './ExperiencePage';
+import Page, { PageContentType } from './Page';
+
 /**
  * Single configuration + registration point for the Optimizely SDK.
  * Imported for side effects by app/layout.tsx.
@@ -27,10 +30,16 @@ config({
   graphUrl: process.env.OPTIMIZELY_GRAPH_GATEWAY,
 });
 
-initContentTypeRegistry([]);
+initContentTypeRegistry([
+  ExperiencePageContentType,
+  PageContentType,
+]);
 
 initDisplayTemplateRegistry([]);
 
 initReactComponentRegistry({
-  resolver: {},
+  resolver: {
+    ExperiencePage,
+    Page,
+  },
 });
