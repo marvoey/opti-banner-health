@@ -1,6 +1,7 @@
 import { contentType, type ContentProps } from '@optimizely/cms-sdk';
 import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 import { authoringMetadata } from './authoringMetadata';
+import { blockWidth, widthClass } from './blockWidth';
 import { AlertShell } from './AlertShell';
 
 /**
@@ -16,6 +17,7 @@ export const NetworkStatusAlertContentType = contentType({
   description: 'Severity-styled operational alert banner with optional link and dismiss.',
   compositionBehaviors: ['elementEnabled'],
   properties: {
+    ...blockWidth(),
     AlertSeverity: {
       type: 'string',
       displayName: 'Alert Severity',
@@ -94,7 +96,7 @@ export default function NetworkStatusAlert({ content }: Props) {
     <div {...pa(block)}>
       <AlertShell
         dismissible={dismissible}
-        className={`mx-auto flex max-w-6xl items-start gap-3 border-l-4 px-6 py-3 text-sm ${tone}`}
+        className={`mx-auto flex items-start gap-3 border-l-4 px-6 py-3 text-sm ${widthClass(content.BlockWidth)} ${tone}`}
       >
         <p {...pa('AlertMessage')} className="font-medium" style={critical ? { color: 'var(--color-brand-red)' } : undefined}>
           <span className="mr-2 font-bold uppercase tracking-wide">{severity}:</span>

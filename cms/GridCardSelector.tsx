@@ -1,6 +1,7 @@
 import { contentType, type ContentProps } from '@optimizely/cms-sdk';
 import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 import { authoringMetadata } from './authoringMetadata';
+import { blockWidth, widthClass } from './blockWidth';
 import { expandReferences, previewContextOf } from './expandRefs';
 
 /**
@@ -71,6 +72,7 @@ export const GridCardSelectorContentType = contentType({
   description: 'A titled grid of selectable Card blocks with a configurable column count.',
   compositionBehaviors: ['elementEnabled'],
   properties: {
+    ...blockWidth(),
     GridTitle: {
       type: 'string',
       displayName: 'Grid Title',
@@ -193,7 +195,7 @@ export default async function GridCardSelector({ content }: Props) {
 
   return (
     <section {...pa(block)} className="bg-white px-6 py-16">
-      <div className="mx-auto max-w-6xl">
+      <div className={`mx-auto ${widthClass(content.BlockWidth)}`}>
         {content.GridTitle ? (
           <h2 {...pa('GridTitle')} className="mb-8 text-center text-3xl font-bold text-slate-900">
             {content.GridTitle}

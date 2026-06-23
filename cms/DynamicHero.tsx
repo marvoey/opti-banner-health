@@ -1,6 +1,7 @@
 import { contentType, type ContentProps } from '@optimizely/cms-sdk';
 import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 import { authoringMetadata } from './authoringMetadata';
+import { blockWidth, widthClass } from './blockWidth';
 
 /**
  * Dynamic Hero — the primary visual element on a page (homepage / campaign /
@@ -15,6 +16,7 @@ export const DynamicHeroContentType = contentType({
   description: 'High-impact hero with kicker, title, subtitle, media background and up to two CTAs.',
   compositionBehaviors: ['elementEnabled'],
   properties: {
+    ...blockWidth(),
     SuperHeader: {
       type: 'string',
       displayName: 'Super Header',
@@ -164,7 +166,7 @@ export default function DynamicHero({ content }: Props) {
         </div>
       )}
 
-      <div className="relative mx-auto flex min-h-[480px] max-w-6xl items-center px-6 py-16">
+      <div className={`relative mx-auto flex min-h-[480px] items-center px-6 py-16 ${widthClass(content.BlockWidth)}`}>
         <div className="max-w-2xl">
           {content.SuperHeader ? (
             <span

@@ -2,6 +2,7 @@ import { contentType, type ContentProps } from '@optimizely/cms-sdk';
 import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 import { RichText } from '@optimizely/cms-sdk/react/richText';
 import { authoringMetadata } from './authoringMetadata';
+import { blockWidth, widthClass } from './blockWidth';
 
 /**
  * Regulatory Disclaimer — audited legal / licensing copy. The body is locked
@@ -14,6 +15,7 @@ export const RegulatoryDisclaimerContentType = contentType({
   description: 'Audited legal disclaimer with tracking ID and optional BCBSA licensing badge.',
   compositionBehaviors: ['elementEnabled'],
   properties: {
+    ...blockWidth(),
     DisclosuresID: {
       type: 'string',
       displayName: 'Disclosures ID',
@@ -59,7 +61,7 @@ export default function RegulatoryDisclaimer({ content }: Props) {
 
   return (
     <section {...pa(block)} className="border-t border-slate-200 bg-slate-50 px-6 py-8">
-      <div className="mx-auto flex max-w-4xl items-start gap-4">
+      <div className={`mx-auto flex items-start gap-4 ${widthClass(content.BlockWidth)}`}>
         {showLogo ? (
           <span className="shrink-0 rounded border border-blue-800 px-2 py-1 text-[10px] font-bold uppercase leading-tight text-blue-800">
             BCBSA

@@ -2,6 +2,7 @@ import { contentType, type ContentProps } from '@optimizely/cms-sdk';
 import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 import { Search } from 'lucide-react';
 import { authoringMetadata } from './authoringMetadata';
+import { blockWidth, widthClass } from './blockWidth';
 
 /**
  * Search Gateway — a search input that triggers federated search/discovery
@@ -16,6 +17,7 @@ export const SearchGatewayContentType = contentType({
   description: 'Federated search entry point with placeholder, target page, type-ahead and index scope.',
   compositionBehaviors: ['elementEnabled'],
   properties: {
+    ...blockWidth(),
     PlaceholderText: {
       type: 'string',
       displayName: 'Placeholder Text',
@@ -74,7 +76,7 @@ export default function SearchGateway({ content }: Props) {
 
   return (
     <section {...pa(block)} className="bg-blue-50 px-6 py-12">
-      <div className="mx-auto max-w-3xl">
+      <div className={`mx-auto ${widthClass(content.BlockWidth)}`}>
         <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 shadow-sm">
           <Search className="h-5 w-5 shrink-0 text-blue-800" aria-hidden />
           <input

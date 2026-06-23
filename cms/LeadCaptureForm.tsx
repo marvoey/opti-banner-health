@@ -1,6 +1,7 @@
 import { contentType, type ContentProps } from '@optimizely/cms-sdk';
 import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 import { authoringMetadata } from './authoringMetadata';
+import { blockWidth, widthClass } from './blockWidth';
 import { expandReferences, previewContextOf } from './expandRefs';
 
 /**
@@ -59,6 +60,7 @@ export const LeadCaptureFormContentType = contentType({
   description: 'A Marketo-routed lead form with a title, configurable fields and a success redirect.',
   compositionBehaviors: ['elementEnabled'],
   properties: {
+    ...blockWidth(),
     FormTitle: {
       type: 'string',
       displayName: 'Form Title',
@@ -166,7 +168,7 @@ export default async function LeadCaptureForm({ content }: Props) {
       <form
         // Marketo program routing — wiring the actual submit is out of scope here.
         data-marketo-program={content.MarketoProgramID ?? undefined}
-        className="mx-auto max-w-xl rounded-2xl border border-slate-200 bg-white p-8 shadow-sm"
+        className={`mx-auto rounded-2xl border border-slate-200 bg-white p-8 shadow-sm ${widthClass(content.BlockWidth)}`}
         // Prevent the decorative scaffold form from navigating.
         action="#"
       >
