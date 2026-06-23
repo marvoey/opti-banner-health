@@ -58,7 +58,7 @@ export const LeadCaptureFormContentType = contentType({
   baseType: '_component',
   displayName: 'Lead Capture Form (v1)',
   description: 'A Marketo-routed lead form with a title, configurable fields and a success redirect.',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['elementEnabled', 'sectionEnabled'],
   properties: {
     ...blockWidth(),
     FormTitle: {

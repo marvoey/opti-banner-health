@@ -13,7 +13,7 @@ export const RegulatoryDisclaimerContentType = contentType({
   baseType: '_component',
   displayName: 'Regulatory Disclaimer (v1)',
   description: 'Audited legal disclaimer with tracking ID and optional BCBSA licensing badge.',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['elementEnabled', 'sectionEnabled'],
   properties: {
     ...blockWidth(),
     DisclosuresID: {

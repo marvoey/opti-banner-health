@@ -15,7 +15,7 @@ export const SearchGatewayContentType = contentType({
   baseType: '_component',
   displayName: 'Search Gateway (v1)',
   description: 'Federated search entry point with placeholder, target page, type-ahead and index scope.',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['elementEnabled', 'sectionEnabled'],
   properties: {
     ...blockWidth(),
     PlaceholderText: {

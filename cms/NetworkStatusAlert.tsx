@@ -15,7 +15,7 @@ export const NetworkStatusAlertContentType = contentType({
   baseType: '_component',
   displayName: 'Network Status Alert (v1)',
   description: 'Severity-styled operational alert banner with optional link and dismiss.',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['elementEnabled', 'sectionEnabled'],
   properties: {
     ...blockWidth(),
     AlertSeverity: {

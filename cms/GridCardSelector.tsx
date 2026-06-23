@@ -70,7 +70,7 @@ export const GridCardSelectorContentType = contentType({
   baseType: '_component',
   displayName: 'Grid / Card Selector (v1)',
   description: 'A titled grid of selectable Card blocks with a configurable column count.',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['elementEnabled', 'sectionEnabled'],
   properties: {
     ...blockWidth(),
     GridTitle: {

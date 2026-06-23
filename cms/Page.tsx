@@ -51,7 +51,7 @@ export default function Page({ content }: Props) {
   const items = content.Content ?? [];
 
   return (
-    <main {...pa('Content')} className="mx-auto max-w-3xl px-6 py-12">
+    <main {...pa('Content')} className="w-full">
       {items.map((item, i) => (
         <OptimizelyComponent key={i} content={item} />
       ))}

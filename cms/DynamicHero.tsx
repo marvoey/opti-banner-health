@@ -14,7 +14,7 @@ export const DynamicHeroContentType = contentType({
   baseType: '_component',
   displayName: 'Dynamic Hero (v1)',
   description: 'High-impact hero with kicker, title, subtitle, media background and up to two CTAs.',
-  compositionBehaviors: ['elementEnabled'],
+  compositionBehaviors: ['elementEnabled', 'sectionEnabled'],
   properties: {
     ...blockWidth(),
     SuperHeader: {
